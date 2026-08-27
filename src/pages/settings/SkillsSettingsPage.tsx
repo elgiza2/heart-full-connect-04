@@ -12,6 +12,9 @@ import {
   Search,
   ShieldCheck,
   ChevronRight,
+  Blocks,
+  Wand2,
+
 } from "lucide-react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
