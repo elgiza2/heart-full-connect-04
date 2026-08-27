@@ -328,8 +328,47 @@ export default function SkillsSettingsPage() {
         }}
       />
 
+      {/* Overview */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+        className="rounded-[20px] bg-[var(--mn-card)] p-5"
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <p className="text-[19px] font-bold leading-tight text-[color:var(--mn-fg)]">
+              Your skill library
+            </p>
+            <p className="mt-1.5 text-[12.5px] leading-relaxed text-[color:var(--mn-muted)] max-w-[300px]">
+              Megsy picks the right expert automatically while you chat.
+            </p>
+          </div>
+          <span className="shrink-0 w-11 h-11 rounded-2xl grid place-items-center bg-primary/12">
+            <Sparkles className="w-5 h-5 text-primary" strokeWidth={1.9} />
+          </span>
+        </div>
+        <div className="mt-4 grid grid-cols-3 gap-2">
+          {[
+            { label: "Skills", value: mySkills.length },
+            { label: "Enabled", value: enabledCount },
+            { label: "Library", value: librarySkills.length },
+          ].map((stat) => (
+            <div
+              key={stat.label}
+              className="rounded-[14px] px-3 py-2.5 bg-[color:var(--mn-sep)]/60"
+            >
+              <p className="text-[17px] font-bold tabular-nums text-[color:var(--mn-fg)]">
+                {stat.value}
+              </p>
+              <p className="text-[11px] font-medium text-[color:var(--mn-muted)]">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
       {/* Search */}
-      <div className="flex items-center gap-2 h-11 px-4 rounded-[14px] bg-[var(--mn-card)]">
+      <div className="flex items-center gap-2 h-12 px-4 rounded-[16px] bg-[var(--mn-card)] focus-within:ring-2 focus-within:ring-primary/25 transition-shadow">
         <Search className="w-4 h-4 text-[color:var(--mn-muted)] shrink-0" />
         <input
           value={query}
@@ -337,11 +376,20 @@ export default function SkillsSettingsPage() {
           placeholder="Search skills"
           className="flex-1 min-w-0 bg-transparent outline-none text-[14px] text-[color:var(--mn-fg)] placeholder:text-[color:var(--mn-muted)]"
         />
+        {query && (
+          <button
+            onClick={() => setQuery("")}
+            aria-label="Clear search"
+            className="h-6 w-6 rounded-full grid place-items-center text-[color:var(--mn-muted)] hover:bg-[color:var(--mn-sep)]"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        )}
       </div>
 
       {/* Tabs + official library */}
       <div className="flex items-center gap-2">
-        <div className="flex-1 flex items-center gap-1 h-10 p-1 rounded-full bg-[var(--mn-card)]">
+        <div className="flex-1 flex items-center gap-1 h-11 p-1 rounded-full bg-[var(--mn-card)]">
           {(
             [
               { id: "all" as const, label: "All", count: mySkills.length },
@@ -351,20 +399,30 @@ export default function SkillsSettingsPage() {
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={cn(
-                "flex-1 h-8 rounded-full text-[12.5px] font-semibold transition-colors",
-                tab === t.id
-                  ? "bg-[color:var(--mn-fg)] text-[var(--mn-card)]"
-                  : "text-[color:var(--mn-muted)]",
-              )}
+              className="relative flex-1 h-9 rounded-full text-[12.5px] font-semibold transition-colors"
             >
-              {t.label} {t.count > 0 && <span className="tabular-nums opacity-70">{t.count}</span>}
+              {tab === t.id && (
+                <motion.span
+                  layoutId="skills-tab-pill"
+                  transition={{ type: "spring", stiffness: 480, damping: 36 }}
+                  className="absolute inset-0 rounded-full bg-[color:var(--mn-fg)]"
+                />
+              )}
+              <span
+                className={cn(
+                  "relative z-10",
+                  tab === t.id ? "text-[var(--mn-card)]" : "text-[color:var(--mn-muted)]",
+                )}
+              >
+                {t.label}{" "}
+                {t.count > 0 && <span className="tabular-nums opacity-70">{t.count}</span>}
+              </span>
             </button>
           ))}
         </div>
         <button
           onClick={() => navigate("/settings/skills/library")}
-          className="shrink-0 flex items-center gap-2 h-10 px-3.5 rounded-full bg-[var(--mn-card)] text-[12.5px] font-medium text-[color:var(--mn-fg)]"
+          className="shrink-0 flex items-center gap-2 h-11 px-4 rounded-full bg-[var(--mn-card)] text-[12.5px] font-medium text-[color:var(--mn-fg)] active:scale-[0.97] transition-transform"
         >
           <ShieldCheck className="w-3.5 h-3.5 text-[color:var(--mn-muted)]" />
           Library
@@ -412,15 +470,18 @@ export default function SkillsSettingsPage() {
         </div>
       ) : (
         <div className="space-y-2.5">
-          {visible.map((s) => (
-            <SkillRowCard
-              key={s.id}
-              skill={s}
-              onEdit={() => startEdit(s)}
-              onDelete={() => handleDelete(s.id, s.name)}
-              onToggle={(v) => toggleEnabled(s, v)}
-            />
-          ))}
+          <AnimatePresence initial={false} mode="popLayout">
+            {visible.map((s, i) => (
+              <SkillRowCard
+                key={s.id}
+                index={i}
+                skill={s}
+                onEdit={() => startEdit(s)}
+                onDelete={() => handleDelete(s.id, s.name)}
+                onToggle={(v) => toggleEnabled(s, v)}
+              />
+            ))}
+          </AnimatePresence>
         </div>
       )}
 
@@ -432,13 +493,14 @@ export default function SkillsSettingsPage() {
           </p>
           <div className="flex flex-wrap gap-2">
             {SUGGESTIONS.slice(0, 6).map((s) => (
-              <button
+              <motion.button
                 key={s}
+                whileTap={{ scale: 0.94 }}
                 onClick={() => navigate("/settings/skills/new", { state: { seed: s } })}
-                className="inline-flex items-center gap-1.5 px-3 h-8 rounded-full text-[12.5px] bg-[var(--mn-card)] text-[color:var(--mn-muted)] hover:text-[color:var(--mn-fg)] transition-colors"
+                className="inline-flex items-center gap-1.5 px-3.5 h-9 rounded-full text-[12.5px] bg-[var(--mn-card)] text-[color:var(--mn-muted)] hover:text-[color:var(--mn-fg)] transition-colors"
               >
                 <Sparkles className="w-3 h-3 text-primary" /> {s}
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
@@ -452,9 +514,9 @@ function SkillAvatar({ name, enabled }: { name: string; enabled: boolean }) {
   return (
     <div
       className={cn(
-        "shrink-0 w-10 h-10 rounded-full grid place-items-center text-[14px] font-semibold",
+        "shrink-0 w-11 h-11 rounded-2xl grid place-items-center text-[15px] font-bold transition-colors",
         enabled
-          ? "bg-primary/15 text-primary"
+          ? "bg-primary/12 text-primary"
           : "bg-[color:var(--mn-sep)] text-[color:var(--mn-muted)]",
       )}
     >
@@ -465,11 +527,13 @@ function SkillAvatar({ name, enabled }: { name: string; enabled: boolean }) {
 
 function SkillRowCard({
   skill,
+  index = 0,
   onEdit,
   onDelete,
   onToggle,
 }: {
   skill: Skill;
+  index?: number;
   onEdit: () => void;
   onDelete: () => void;
   onToggle: (v: boolean) => void;
@@ -477,17 +541,19 @@ function SkillRowCard({
   const enabled = skill.is_enabled !== false;
 
   return (
-    <div
-      className={cn(
-        "rounded-[14px] bg-[var(--mn-card)] px-4 py-3.5 transition-opacity",
-        !enabled && "opacity-70",
-      )}
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+      animate={{ opacity: enabled ? 1 : 0.72, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -8, scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 420, damping: 32, delay: Math.min(index, 6) * 0.03 }}
+      className="group rounded-[18px] bg-[var(--mn-card)] px-4 py-4"
     >
       <div className="flex items-start gap-3">
         <SkillAvatar name={skill.name} enabled={enabled} />
         <button onClick={onEdit} className="min-w-0 flex-1 text-left">
           <div className="flex items-center gap-1.5">
-            <p className="text-[14.5px] font-semibold text-[color:var(--mn-fg)] truncate">
+            <p className="text-[15px] font-semibold text-[color:var(--mn-fg)] truncate">
               {skill.name}
             </p>
             {skill.source === "system" && (
@@ -495,33 +561,50 @@ function SkillRowCard({
             )}
           </div>
           {skill.description ? (
-            <p className="mt-0.5 text-[12.5px] leading-snug text-[color:var(--mn-muted)] line-clamp-2">
+            <p className="mt-1 text-[12.5px] leading-snug text-[color:var(--mn-muted)] line-clamp-2">
               {skill.description}
             </p>
           ) : (
-            <p className="mt-0.5 text-[12.5px] text-[color:var(--mn-muted)]/70 italic">
+            <p className="mt-1 text-[12.5px] text-[color:var(--mn-muted)]/70 italic">
               No description
             </p>
           )}
         </button>
-        <Switch checked={enabled} onCheckedChange={onToggle} className="mt-0.5 shrink-0" />
+        <Switch checked={enabled} onCheckedChange={onToggle} className="mt-1 shrink-0" />
       </div>
-      <div className="mt-3 flex items-center justify-end gap-1 -mb-1 -mr-1.5">
-        <button
-          onClick={onEdit}
-          className="h-7 px-2.5 rounded-full text-[12px] font-medium text-[color:var(--mn-muted)] hover:text-[color:var(--mn-fg)] hover:bg-[color:var(--mn-sep)] transition-colors"
+
+      <div className="mt-3.5 flex items-center justify-between gap-2 border-t border-[color:var(--mn-sep)] pt-3">
+        <span
+          className={cn(
+            "inline-flex items-center gap-1.5 text-[11.5px] font-semibold",
+            enabled ? "text-primary" : "text-[color:var(--mn-muted)]",
+          )}
         >
-          Edit
-        </button>
-        <button
-          onClick={onDelete}
-          aria-label="Delete skill"
-          className="h-7 w-7 rounded-full grid place-items-center text-[color:var(--mn-muted)] hover:text-[color:var(--mn-danger)] hover:bg-[color:var(--mn-sep)] transition-colors"
-        >
-          <Trash2 className="w-3.5 h-3.5" />
-        </button>
+          <span
+            className={cn(
+              "w-1.5 h-1.5 rounded-full",
+              enabled ? "bg-primary" : "bg-[color:var(--mn-muted)]",
+            )}
+          />
+          {enabled ? "Active in chat" : "Paused"}
+        </span>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={onEdit}
+            className="h-8 px-3 rounded-full text-[12px] font-medium text-[color:var(--mn-muted)] hover:text-[color:var(--mn-fg)] hover:bg-[color:var(--mn-sep)] transition-colors"
+          >
+            Edit
+          </button>
+          <button
+            onClick={onDelete}
+            aria-label="Delete skill"
+            className="h-8 w-8 rounded-full grid place-items-center text-[color:var(--mn-muted)] hover:text-[color:var(--mn-danger)] hover:bg-[color:var(--mn-sep)] transition-colors"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
