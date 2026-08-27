@@ -5,8 +5,8 @@
 // support chat knowledge base so they NEVER drift apart.
 //
 // Pricing model (clean, two paid plans):
-//   Pro  $20 / month  · first month $7  · $200 / year (2 months free)
-//   Max  $40 / month  · first month $17 · $400 / year (2 months free)
+//   Pro  $20 / month  · first month $7  · $160 / year (4 months free)
+//   Max  $40 / month  · first month $17 · $320 / year (4 months free)
 // =====================================================================
 
 export type PlanTier = "starter" | "pro" | "elite" | "business";
@@ -43,7 +43,7 @@ export interface PlanCardConfig {
   subText: string;
   /** Standard recurring monthly price. */
   monthlyPrice: number;
-  /** Yearly price = 10 × monthly (2 months free). */
+  /** Yearly price = 8 × monthly (4 months free). */
   yearlyPrice: number;
   /** Promotional first-month price. */
   firstMonthPrice?: number;
@@ -83,8 +83,11 @@ const MAX_FEATURES = [
   "24/7 priority support · cancel anytime",
 ];
 
+/** Yearly = 8 × monthly, i.e. 4 months free. */
+export const YEARLY_FREE_MONTHS = 4;
+
 const yearlyIntro = (savings: number, bonus: number) => [
-  `Save $${savings} a year — 2 months free`,
+  `Save $${savings} a year — ${YEARLY_FREE_MONTHS} months free`,
   `+${bonus.toLocaleString("en-US")} bonus MC delivered upfront`,
   "Price locked for 12 months",
 ];
@@ -98,14 +101,14 @@ export const PLANS: PlanCardConfig[] = [
     text: "#ffffff",
     subText: "rgba(255, 255, 255, 0.78)",
     monthlyPrice: 20,
-    yearlyPrice: 200,
+    yearlyPrice: 160,
     firstMonthPrice: 7,
 
     monthlyCredits: `${PLAN_MONTHLY_CREDITS.pro} MC / month`,
-    yearlyCredits: "Save $40 + 480 bonus MC",
+    yearlyCredits: "Save $80 + 720 bonus MC",
     features: PRO_FEATURES,
     monthlyFeatures: PRO_FEATURES,
-    yearlyFeatures: [...yearlyIntro(40, 480), ...PRO_FEATURES.slice(0, 7)],
+    yearlyFeatures: [...yearlyIntro(80, 720), ...PRO_FEATURES.slice(0, 7)],
 
     ctaBg: "#0b1020",
     ctaText: "#ffffff",
@@ -120,14 +123,14 @@ export const PLANS: PlanCardConfig[] = [
     text: "#ffffff",
     subText: "rgba(255, 255, 255, 0.78)",
     monthlyPrice: 40,
-    yearlyPrice: 400,
+    yearlyPrice: 320,
     firstMonthPrice: 17,
 
     monthlyCredits: `${PLAN_MONTHLY_CREDITS.elite} MC / month`,
-    yearlyCredits: "Save $80 + 1,200 bonus MC",
+    yearlyCredits: "Save $160 + 1,800 bonus MC",
     features: MAX_FEATURES,
     monthlyFeatures: MAX_FEATURES,
-    yearlyFeatures: [...yearlyIntro(80, 1200), ...MAX_FEATURES.slice(0, 7)],
+    yearlyFeatures: [...yearlyIntro(160, 1800), ...MAX_FEATURES.slice(0, 7)],
 
     ctaBg: "#0b0420",
     ctaText: "#ffffff",
@@ -261,7 +264,7 @@ export const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Do unused credits roll over?",
-    a: "No. Monthly MC reset at the start of each cycle. Yearly plans get bonus MC delivered upfront (Pro +480, Max +1,200) on top of two months free.",
+    a: "No. Monthly MC reset at the start of each cycle. Yearly plans get bonus MC delivered upfront (Pro +720, Max +1,800) on top of four months free.",
   },
   {
     q: "Do prices include tax?",

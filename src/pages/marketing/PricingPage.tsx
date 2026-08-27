@@ -839,7 +839,7 @@ const PricingPage = () => {
                 className="text-[9px] px-2 py-0.5 rounded-full border border-foreground/25 text-foreground/85 font-normal"
                 style={{ letterSpacing: "0.15em" }}
               >
-                2 months free
+                4 months free
               </span>
             </span>
           </div>
