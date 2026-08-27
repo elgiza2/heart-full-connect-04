@@ -2769,8 +2769,9 @@ const ChatPage = () => {
       const isBigView = plusView === "skills" || plusView === "tools";
       // Manus-style sheet: opens compact but shows header + first rows,
       // then expands upward as the user scrolls.
-      const expandedCap = isBigView ? vh * 0.9 : vh * 0.86;
-      const collapsedH = Math.max(400, Math.min(vh * 0.6, composerTop - 16));
+      const expandedCap = isBigView ? vh * 0.9 : vh * 0.5;
+      const minH = isBigView ? 400 : 250;
+      const collapsedH = Math.max(minH, Math.min(isBigView ? vh * 0.6 : vh * 0.42, composerTop - 16));
       const expandedH = Math.max(collapsedH, Math.min(expandedCap, vh - 40));
       const collapsedY = expandedH - collapsedH;
 
