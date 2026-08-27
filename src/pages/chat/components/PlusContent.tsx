@@ -33,6 +33,7 @@ import {
 
 } from "lucide-react";
 import { toast } from "sonner";
+import { promptUpgrade } from "@/lib/upgradeMoment";
 import { supabase } from "@/integrations/supabase/client";
 import {
   DesktopRow,
@@ -493,7 +494,7 @@ const PlusModels = (p: PlusContentProps) => (
             transition={iosSpring}
             onClick={() => {
               if (locked) {
-                toast.info("Megsy " + t.label + " is available on premium plans only");
+                promptUpgrade("Megsy " + t.label);
                 return;
               }
               p.setMegsyTier(t.id);
