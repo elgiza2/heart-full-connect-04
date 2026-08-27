@@ -147,6 +147,27 @@ export const PLAN_HIGHLIGHTS: Record<"pro" | "max", string[]> = {
   max: MAX_FEATURES.slice(0, 5),
 };
 
+/**
+ * Retention (save) offer shown when a subscriber starts the cancel flow:
+ * 50% off for two months, or pause the subscription instead of cancelling.
+ */
+export const SAVE_OFFER = {
+  enabled: true,
+  discountPercent: 50,
+  months: 2,
+  pauseMonths: [1, 2, 3] as const,
+  titleEn: "Before you cancel — keep it for half price",
+  bodyEn:
+    "Take 50% off your next 2 months, or pause your plan and keep everything exactly where you left it.",
+  discountCtaEn: "Claim 50% off for 2 months",
+  pauseCtaEn: "Pause instead",
+} as const;
+
+/** Half-price amount for the save offer, per plan tier. */
+export const saveOfferPrice = (monthlyPrice: number) =>
+  Math.round((monthlyPrice * (100 - SAVE_OFFER.discountPercent)) / 100);
+
+
 export const getPlan = (tier: PlanTier) => PLANS.find((p) => p.tier === tier);
 
 /**
