@@ -470,15 +470,18 @@ export default function SkillsSettingsPage() {
         </div>
       ) : (
         <div className="space-y-2.5">
-          {visible.map((s) => (
-            <SkillRowCard
-              key={s.id}
-              skill={s}
-              onEdit={() => startEdit(s)}
-              onDelete={() => handleDelete(s.id, s.name)}
-              onToggle={(v) => toggleEnabled(s, v)}
-            />
-          ))}
+          <AnimatePresence initial={false} mode="popLayout">
+            {visible.map((s, i) => (
+              <SkillRowCard
+                key={s.id}
+                index={i}
+                skill={s}
+                onEdit={() => startEdit(s)}
+                onDelete={() => handleDelete(s.id, s.name)}
+                onToggle={(v) => toggleEnabled(s, v)}
+              />
+            ))}
+          </AnimatePresence>
         </div>
       )}
 
@@ -490,13 +493,14 @@ export default function SkillsSettingsPage() {
           </p>
           <div className="flex flex-wrap gap-2">
             {SUGGESTIONS.slice(0, 6).map((s) => (
-              <button
+              <motion.button
                 key={s}
+                whileTap={{ scale: 0.94 }}
                 onClick={() => navigate("/settings/skills/new", { state: { seed: s } })}
-                className="inline-flex items-center gap-1.5 px-3 h-8 rounded-full text-[12.5px] bg-[var(--mn-card)] text-[color:var(--mn-muted)] hover:text-[color:var(--mn-fg)] transition-colors"
+                className="inline-flex items-center gap-1.5 px-3.5 h-9 rounded-full text-[12.5px] bg-[var(--mn-card)] text-[color:var(--mn-muted)] hover:text-[color:var(--mn-fg)] transition-colors"
               >
                 <Sparkles className="w-3 h-3 text-primary" /> {s}
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
