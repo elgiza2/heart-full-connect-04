@@ -141,21 +141,17 @@ export default function MediaModelPickerSheet({
                   )}
 
                   <div className="aspect-[4/3] w-full rounded-xl overflow-hidden mb-2 flex items-center justify-center">
-                    {hasBrandIcon(m.name, m.provider) ? (
-                      <BrandIcon name={m.name} provider={m.provider} size={64} variant="color" />
-                    ) : m.thumbnailUrl ? (
+                    {m.thumbnailUrl ? (
                       <img decoding="async"
                         src={m.thumbnailUrl}
                         alt={m.name}
                         loading="lazy"
                         className="w-full h-full object-cover"
                       />
+                    ) : hasBrandIcon(m.name, m.provider) ? (
+                      <BrandIcon name={m.name} provider={m.provider} size={64} variant="color" />
                     ) : (
-                      <img loading="lazy" decoding="async"
-                        src={megsyIcon}
-                        alt="Megsy"
-                        className="w-14 h-14 object-contain"
-                      />
+                      <ModelMonogram name={m.name} size={56} />
                     )}
                   </div>
                   <div className="flex items-start justify-between gap-2">
@@ -163,13 +159,24 @@ export default function MediaModelPickerSheet({
                       {hasBrandIcon(m.name, m.provider) ? (
                         <BrandIcon name={m.name} provider={m.provider} size={16} variant="color" className="shrink-0" />
                       ) : (
-                        <img loading="lazy" decoding="async" src={megsyIcon} alt="" className="w-4 h-4 shrink-0 object-contain" />
+                        <ModelMonogram name={m.name} size={16} />
                       )}
                       <div className="font-black text-sm truncate text-foreground">
                         {m.name}
                       </div>
                     </div>
                     {active && <Check className="w-4 h-4 text-brand-action shrink-0 mt-0.5" />}
+                  </div>
+                  <div className="mt-1.5">
+                    <span
+                      className={
+                        isUnlimitedMediaModel(m) || mode === "images"
+                          ? "inline-flex items-center px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/15 text-emerald-600 border border-emerald-500/25"
+                          : "inline-flex items-center px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-foreground/8 text-muted-foreground border border-foreground/10"
+                      }
+                    >
+                      {mediaModelBadge(m, mode === "video" ? "video" : "image")}
+                    </span>
                   </div>
                 </button>
               );
