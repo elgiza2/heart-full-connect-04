@@ -83,8 +83,11 @@ const MAX_FEATURES = [
   "24/7 priority support · cancel anytime",
 ];
 
+/** Yearly = 8 × monthly, i.e. 4 months free. */
+export const YEARLY_FREE_MONTHS = 4;
+
 const yearlyIntro = (savings: number, bonus: number) => [
-  `Save $${savings} a year — 2 months free`,
+  `Save $${savings} a year — ${YEARLY_FREE_MONTHS} months free`,
   `+${bonus.toLocaleString("en-US")} bonus MC delivered upfront`,
   "Price locked for 12 months",
 ];
