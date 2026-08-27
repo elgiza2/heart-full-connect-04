@@ -20,6 +20,7 @@ import ProfileGlassShell, {
   GlassSecondaryButton,
 } from "@/components/profile/ProfileGlassShell";
 import { toast } from "sonner";
+import { SAVE_OFFER, saveOfferPrice } from "@/data/pricingData";
 
 type Sub = {
   plan: string | null;
@@ -55,6 +56,7 @@ const BillingPage = () => {
 
   // cancel flow
   const [cancelOpen, setCancelOpen] = useState(false);
+  const [step, setStep] = useState<"offer" | "reason">("offer");
   const [reason, setReason] = useState<string>("");
   const [improvement, setImprovement] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -389,7 +391,7 @@ const BillingPage = () => {
                 <ArrowUpRight className="w-4 h-4 bpv2-row-chev" />
               </button>
               {isActive && !cancelOpen && (
-                <button className="bpv2-row bpv2-row-btn bpv2-row-b bpv2-row-danger" onClick={() => setCancelOpen(true)}>
+                <button className="bpv2-row bpv2-row-btn bpv2-row-b bpv2-row-danger" onClick={() => { setStep("offer"); setCancelOpen(true); }}>
                   <div className="bpv2-row-icon"><LogOut className="w-[18px] h-[18px]" /></div>
                   <div className="bpv2-row-body">
                     <div className="bpv2-row-label">Cancel subscription</div>
@@ -402,8 +404,8 @@ const BillingPage = () => {
 
           {isActive && cancelOpen && (
             <section className="bpv2-section">
-              <h2 className="bpv2-section-title">Before you go</h2>
-              <div className="bpv2-card bpv2-card-pad">{CancelForm}</div>
+              <h2 className="bpv2-section-title">{step === "offer" ? "Wait — an offer for you" : "Before you go"}</h2>
+              <div className="bpv2-card bpv2-card-pad">{CancelFlow}</div>
             </section>
           )}
 
@@ -476,7 +478,7 @@ const BillingPage = () => {
           <div className="mt-5 flex items-center justify-end gap-2">
             {isActive && (
               <button
-                onClick={() => setCancelOpen((v) => !v)}
+                onClick={() => { setStep("offer"); setCancelOpen((v) => !v); }}
                 className="px-4 py-2 rounded-lg text-[13px] font-medium text-rose-500 hover:bg-rose-500/10 transition-colors"
               >
                 Cancel subscription
@@ -493,8 +495,8 @@ const BillingPage = () => {
       </SubSection>
 
       {isActive && cancelOpen && (
-        <SubSection title="Before you go" description="Tell us why so we can improve.">
-          <SubCard>{CancelForm}</SubCard>
+        <SubSection title={step === "offer" ? "Wait — an offer for you" : "Before you go"} description={step === "offer" ? "Half price for two months, or pause instead." : "Tell us why so we can improve."}>
+          <SubCard>{CancelFlow}</SubCard>
         </SubSection>
       )}
     </SubShell>
