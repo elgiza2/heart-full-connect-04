@@ -61,7 +61,7 @@
 ### /pricing — Pricing Page
 - Contact shown: support@megsyai.com and +20 109 882 1812
 - Two paid plans: Pro and Max (no free card shown on pricing page)
-- Yearly billing toggle: 2 months free (yearly = 10 × monthly)
+- Yearly billing toggle: 4 months free (yearly = 8 × monthly)
 - Payment processor: **Dodo Payments** (PCI-DSS Level 1 merchant of record)
 - Bank statement descriptor: "DODO * MEGSY AI"
 - Prices shown ex. tax; VAT/GST added at checkout
@@ -69,9 +69,9 @@
 #### Plan Details (monthly / yearly)
 | Plan | First month | Monthly | Yearly | MC/month | Badge |
 |---|---|---|---|---|---|
-| **Pro** | $7 | $20 | $200/yr | 240 MC | — |
-| **Max** | $17 | $40 | $400/yr | 600 MC | MOST POPULAR |
-- Yearly bonus MC: Pro +480, Max +1,200
+| **Pro** | $7 | $20 | $160/yr | 240 MC | — |
+| **Max** | $17 | $40 | $320/yr | 600 MC | MOST POPULAR |
+- Yearly bonus MC: Pro +720, Max +1,800
 - Second-month offer: after the first payment clears, the user is offered month two at the same intro price ($7 Pro / $17 Max) with a "Pay now" button, claimable for 48 hours
 
 #### Pro ($7 first month, then $20/mo) includes:
