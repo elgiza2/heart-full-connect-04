@@ -127,6 +127,9 @@ const DesktopGroup = ({ title, children }: { title?: string; children: React.Rea
 
 const PlusMain = (p: PlusContentProps) => {
   type Tile = { id: string; label: string; Icon: any; onClick: () => void };
+  const [searchMode, setSearchMode] = useWebSearchMode();
+  const [searchOpen, setSearchOpen] = useState(false);
+  const searchLabel = searchMode === "on" ? "On" : searchMode === "off" ? "Off" : "Auto";
 
   const closeThen = (fn: () => void) => () => {
     p.setPlusMenuOpen(false);
@@ -134,9 +137,9 @@ const PlusMain = (p: PlusContentProps) => {
   };
 
   const tiles: Tile[] = [
-    { id: "camera", label: "Camera", Icon: Camera, onClick: closeThen(() => p.cameraInputRef.current?.click()) },
-    { id: "photos", label: "Images", Icon: ImageIcon, onClick: closeThen(() => p.imageInputRef.current?.click()) },
-    { id: "file", label: "Attach file", Icon: FileUp, onClick: closeThen(() => p.fileInputRef.current?.click()) },
+    { id: "camera", label: "Camera", Icon: Aperture, onClick: closeThen(() => p.cameraInputRef.current?.click()) },
+    { id: "photos", label: "Images", Icon: Images, onClick: closeThen(() => p.imageInputRef.current?.click()) },
+    { id: "file", label: "Files", Icon: Paperclip, onClick: closeThen(() => p.fileInputRef.current?.click()) },
   ];
 
   type RowItem = {
@@ -153,17 +156,17 @@ const PlusMain = (p: PlusContentProps) => {
     {
       id: "skills",
       label: "Skills",
-      desc: "Reuse specialised skills to handle specific tasks reliably",
-      Icon: Puzzle,
+      desc: "Reusable skills for specific tasks",
+      Icon: Blocks,
       onClick: closeThen(() => p.navigate("/settings/skills")),
     },
     {
       id: "search",
       label: "Web search",
-      Icon: Globe,
-      value: p.searchEnabled ? "On" : "Off",
-      active: p.searchEnabled,
-      onClick: () => p.handleSearchToggle(),
+      Icon: Radar,
+      value: searchLabel,
+      active: searchMode !== "off",
+      onClick: () => setSearchOpen((v) => !v),
     },
   ];
 
@@ -174,42 +177,75 @@ const PlusMain = (p: PlusContentProps) => {
       whileTap={{ scale: 0.99 }}
       transition={iosSpring}
       onClick={item.onClick}
-      className="plus-row w-full flex items-start gap-3.5 px-3 py-3.5 rounded-[14px] text-start border-0 bg-transparent"
+      className="plus-row w-full flex items-center gap-3 px-2.5 py-2.5 rounded-[12px] text-start border-0 bg-transparent"
     >
       <item.Icon
-        className="shrink-0 w-[22px] h-[22px] mt-[1px] transition-colors duration-200"
-        strokeWidth={1.6}
-        style={{ color: item.active ? "hsl(var(--primary))" : "hsl(var(--foreground) / 0.82)" }}
+        className="shrink-0 w-[18px] h-[18px] transition-colors duration-200"
+        strokeWidth={1.7}
+        style={{ color: item.active ? "hsl(var(--primary))" : "hsl(var(--foreground) / 0.8)" }}
       />
-      <span className="flex-1 min-w-0 flex flex-col gap-1">
-        <span className="text-[15.5px] font-medium leading-none" style={{ color: "hsl(var(--foreground) / 0.94)" }}>
+      <span className="flex-1 min-w-0 flex flex-col gap-0.5">
+        <span className="text-[14px] font-medium leading-none" style={{ color: "hsl(var(--foreground) / 0.94)" }}>
           {item.label}
         </span>
         {item.desc && (
-          <span className="text-[12.5px] leading-[1.45]" style={{ color: "hsl(var(--foreground) / 0.5)" }}>
+          <span className="text-[11.5px] leading-[1.35] truncate" style={{ color: "hsl(var(--foreground) / 0.45)" }}>
             {item.desc}
           </span>
         )}
       </span>
       {item.value && (
-        <span className="shrink-0 text-[13px] font-medium mt-[1px]" style={{ color: "hsl(var(--foreground) / 0.5)" }}>
+        <span className="shrink-0 text-[12px] font-medium" style={{ color: "hsl(var(--foreground) / 0.5)" }}>
           {item.value}
         </span>
       )}
       <ChevronLeft
-        className="shrink-0 w-[17px] h-[17px] mt-[2px] rtl:rotate-0 ltr:rotate-180"
-        style={{ color: "hsl(var(--foreground) / 0.35)" }}
+        className="shrink-0 w-[15px] h-[15px] rtl:rotate-0 ltr:rotate-180"
+        style={{ color: "hsl(var(--foreground) / 0.32)" }}
       />
     </motion.button>
   );
 
-
+  const SearchModeList = ({ compact }: { compact?: boolean }) => (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      exit={{ opacity: 0, height: 0 }}
+      transition={{ duration: 0.18, ease: [0.32, 0.72, 0, 1] }}
+      className="overflow-hidden"
+    >
+      <div
+        className="flex flex-col gap-0.5 rounded-[12px] my-1 p-1"
+        style={{ background: "hsl(var(--foreground) / 0.045)" }}
+      >
+        {WEB_SEARCH_MODES.map((opt) => {
+          const selected = searchMode === opt.id;
+          return (
+            <button
+              key={opt.id}
+              type="button"
+              onClick={() => setSearchMode(opt.id)}
+              className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-[10px] text-start hover:bg-foreground/[0.06] transition-colors"
+            >
+              <span className="flex-1 min-w-0 flex flex-col gap-0.5">
+                <span className="text-[13px] font-medium text-foreground leading-none">{opt.label}</span>
+                {!compact && (
+                  <span className="text-[11px] leading-tight text-muted-foreground truncate">{opt.desc}</span>
+                )}
+              </span>
+              {selected && <Check className="w-[15px] h-[15px] text-primary shrink-0" strokeWidth={2.4} />}
+            </button>
+          );
+        })}
+      </div>
+    </motion.div>
+  );
 
   return (
     <motion.div key="main" {...fadeProps(-8)} className="flex flex-col">
       {/* MOBILE — bottom sheet */}
       <motion.div
-        className="md:hidden flex flex-col pb-2"
+        className="md:hidden flex flex-col pb-1.5"
         style={{ fontFamily: mobileFont }}
         dir="rtl"
         initial="hidden"
@@ -225,7 +261,7 @@ const PlusMain = (p: PlusContentProps) => {
 
         {/* Media tiles strip */}
         <motion.div
-          className="flex gap-2 px-1.5 pb-2"
+          className="flex gap-1.5 px-1.5 pb-1.5"
           variants={{ hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0, transition: iosSpring } }}
         >
           {tiles.map((t) => (
@@ -236,11 +272,11 @@ const PlusMain = (p: PlusContentProps) => {
               whileTap={{ scale: 0.96 }}
               transition={iosSpring}
               onClick={t.onClick}
-              className="kimi-tile flex flex-1 flex-col items-center justify-center gap-2 rounded-[16px] border-0"
-              style={{ height: 88, background: "hsl(var(--foreground) / 0.05)" }}
+              className="kimi-tile flex flex-1 flex-col items-center justify-center gap-1.5 rounded-[13px] border-0"
+              style={{ height: 66, background: "hsl(var(--foreground) / 0.05)" }}
             >
-              <t.Icon className="w-[22px] h-[22px]" strokeWidth={1.6} style={{ color: "hsl(var(--foreground) / 0.85)" }} />
-              <span className="text-[12px] font-medium leading-none" style={{ color: "hsl(var(--foreground) / 0.75)" }}>
+              <t.Icon className="w-[18px] h-[18px]" strokeWidth={1.7} style={{ color: "hsl(var(--foreground) / 0.85)" }} />
+              <span className="text-[11px] font-medium leading-none" style={{ color: "hsl(var(--foreground) / 0.72)" }}>
                 {t.label}
               </span>
             </motion.button>
@@ -255,6 +291,9 @@ const PlusMain = (p: PlusContentProps) => {
               variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: iosSpring } }}
             >
               <SheetRow item={it} />
+              {it.id === "search" && (
+                <AnimatePresence initial={false}>{searchOpen && <SearchModeList compact />}</AnimatePresence>
+              )}
             </motion.div>
           ))}
         </div>
@@ -262,6 +301,7 @@ const PlusMain = (p: PlusContentProps) => {
 
 
       </motion.div>
+
 
 
 
