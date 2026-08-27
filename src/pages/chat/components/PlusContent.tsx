@@ -139,25 +139,31 @@ const PlusMain = (p: PlusContentProps) => {
     { id: "file", label: "Attach file", Icon: FileUp, onClick: closeThen(() => p.fileInputRef.current?.click()) },
   ];
 
-  type RowItem = { id: string; label: string; Icon: any; badge?: string; active?: boolean; toggle?: boolean; onClick: () => void };
+  type RowItem = {
+    id: string;
+    label: string;
+    desc?: string;
+    Icon: any;
+    value?: string;
+    active?: boolean;
+    onClick: () => void;
+  };
 
-  const sections: { title?: string; items: RowItem[] }[] = [
+  const rows: RowItem[] = [
     {
-      items: [
-        { id: "search", label: "Web search", Icon: Globe, active: p.searchEnabled, toggle: true, onClick: () => p.handleSearchToggle() },
-        { id: "skills", label: "Skills", Icon: Puzzle, onClick: closeThen(() => p.navigate("/settings/skills")) },
-        { id: "integrations", label: "Integrations", Icon: Plug, onClick: closeThen(() => p.navigate("/chat?integrations=1")) },
-      ],
+      id: "skills",
+      label: "Skills",
+      desc: "Reuse specialised skills to handle specific tasks reliably",
+      Icon: Puzzle,
+      onClick: closeThen(() => p.navigate("/settings/skills")),
     },
     {
-      items: [
-        { id: "image", label: "Create or edit image", Icon: ImagePlus, onClick: closeThen(() => p.onModeChange?.("images")) },
-        { id: "video", label: "Create video", Icon: VideoIcon, onClick: closeThen(() => p.onModeChange?.("video")) },
-        { id: "slides", label: "Create slides", Icon: Presentation, onClick: closeThen(() => p.onModeChange?.("slides")) },
-        { id: "website", label: "Create a website", Icon: Code2, onClick: closeThen(() => p.onWebsiteStart?.()) },
-        { id: "research", label: "Deep research", Icon: ScanSearch, active: p.chatMode === "deep-research", onClick: closeThen(() => p.onModeChange?.("deep-research")) },
-        { id: "learning", label: "Learning mode", Icon: Lightbulb, onClick: closeThen(() => p.onModeChange?.("learning")) },
-      ],
+      id: "search",
+      label: "Web search",
+      Icon: Globe,
+      value: p.searchEnabled ? "On" : "Off",
+      active: p.searchEnabled,
+      onClick: () => p.handleSearchToggle(),
     },
   ];
 
@@ -165,58 +171,35 @@ const PlusMain = (p: PlusContentProps) => {
     <motion.button
       data-no-neo
       type="button"
-      whileTap={{ scale: item.toggle ? 1 : 0.98 }}
+      whileTap={{ scale: 0.99 }}
       transition={iosSpring}
       onClick={item.onClick}
-      className="plus-row w-full flex items-center gap-3.5 px-3 h-[58px] rounded-[12px] text-start border-0 bg-transparent"
+      className="plus-row w-full flex items-start gap-3.5 px-3 py-3.5 rounded-[14px] text-start border-0 bg-transparent"
     >
       <item.Icon
-        className="shrink-0 w-[22px] h-[22px] transition-colors duration-200"
+        className="shrink-0 w-[22px] h-[22px] mt-[1px] transition-colors duration-200"
         strokeWidth={1.6}
         style={{ color: item.active ? "hsl(var(--primary))" : "hsl(var(--foreground) / 0.82)" }}
       />
-      <span
-        className="flex-1 min-w-0 truncate text-[15.5px] font-normal"
-        style={{ color: "hsl(var(--foreground) / 0.92)" }}
-      >
-        {item.label}
+      <span className="flex-1 min-w-0 flex flex-col gap-1">
+        <span className="text-[15.5px] font-medium leading-none" style={{ color: "hsl(var(--foreground) / 0.94)" }}>
+          {item.label}
+        </span>
+        {item.desc && (
+          <span className="text-[12.5px] leading-[1.45]" style={{ color: "hsl(var(--foreground) / 0.5)" }}>
+            {item.desc}
+          </span>
+        )}
       </span>
-
-      {item.badge && (
-        <span
-          className="shrink-0 rounded-full px-2 py-[2px] text-[10.5px] font-semibold"
-          style={{ background: "hsl(var(--primary) / 0.16)", color: "hsl(var(--primary))" }}
-        >
-          {item.badge}
+      {item.value && (
+        <span className="shrink-0 text-[13px] font-medium mt-[1px]" style={{ color: "hsl(var(--foreground) / 0.5)" }}>
+          {item.value}
         </span>
       )}
-      {item.toggle ? (
-        <span
-          role="switch"
-          aria-checked={!!item.active}
-          className="shrink-0 relative inline-flex items-center rounded-full transition-colors duration-250"
-          style={{
-            width: 42,
-            height: 25,
-            background: item.active ? "hsl(var(--primary))" : "hsl(0 0% 100% / 0.14)",
-          }}
-        >
-          <motion.span
-            className="absolute rounded-full"
-            style={{
-              width: 19,
-              height: 19,
-              top: 3,
-              left: 3,
-              background: item.active ? "#0b0f0d" : "hsl(0 0% 100% / 0.85)",
-            }}
-            animate={{ x: item.active ? 17 : 0 }}
-            transition={{ type: "spring", stiffness: 620, damping: 34, mass: 0.6 }}
-          />
-        </span>
-      ) : (
-        item.active && <Check className="shrink-0 w-[17px] h-[17px]" style={{ color: "hsl(var(--primary))" }} />
-      )}
+      <ChevronLeft
+        className="shrink-0 w-[17px] h-[17px] mt-[2px] rtl:rotate-0 ltr:rotate-180"
+        style={{ color: "hsl(var(--foreground) / 0.35)" }}
+      />
     </motion.button>
   );
 
@@ -234,16 +217,11 @@ const PlusMain = (p: PlusContentProps) => {
         variants={{ hidden: {}, show: { transition: { staggerChildren: 0.022, delayChildren: 0.02 } } }}
       >
         <style>{`
-          .kimi-tile { background: transparent; border: 0; transition: opacity 150ms ease; }
+          .kimi-tile { transition: opacity 150ms ease; }
           .kimi-tile:active { opacity: 0.65; }
           .plus-row { transition: opacity 150ms ease; }
           .plus-row:active { opacity: 0.65; }
         `}</style>
-
-
-        
-
-
 
         {/* Media tiles strip */}
         <motion.div
@@ -258,8 +236,8 @@ const PlusMain = (p: PlusContentProps) => {
               whileTap={{ scale: 0.96 }}
               transition={iosSpring}
               onClick={t.onClick}
-              className="kimi-tile flex flex-1 flex-col items-center justify-center gap-2 rounded-[14px]"
-              style={{ height: 88 }}
+              className="kimi-tile flex flex-1 flex-col items-center justify-center gap-2 rounded-[16px] border-0"
+              style={{ height: 88, background: "hsl(var(--foreground) / 0.05)" }}
             >
               <t.Icon className="w-[22px] h-[22px]" strokeWidth={1.6} style={{ color: "hsl(var(--foreground) / 0.85)" }} />
               <span className="text-[12px] font-medium leading-none" style={{ color: "hsl(var(--foreground) / 0.75)" }}>
@@ -269,29 +247,18 @@ const PlusMain = (p: PlusContentProps) => {
           ))}
         </motion.div>
 
-        {/* Grouped rows with clean section titles */}
-        <div className="px-1.5 flex flex-col gap-2">
-          {sections.map((section, si) => (
+        {/* Rows */}
+        <div className="px-1.5 flex flex-col">
+          {rows.map((it) => (
             <motion.div
-              key={si}
+              key={it.id}
               variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: iosSpring } }}
             >
-              {section.title && (
-                <div
-                  className="px-2.5 pb-1 text-[11.5px] font-semibold tracking-wide uppercase"
-                  style={{ color: "hsl(var(--foreground) / 0.42)" }}
-                >
-                  {section.title}
-                </div>
-              )}
-              <div className="flex flex-col" style={{ background: "transparent" }}>
-                {section.items.map((it) => (
-                  <SheetRow key={it.id} item={it} />
-                ))}
-              </div>
+              <SheetRow item={it} />
             </motion.div>
           ))}
         </div>
+
 
 
       </motion.div>

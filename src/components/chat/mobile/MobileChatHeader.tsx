@@ -30,7 +30,7 @@ type MenuView = "main" | "rename" | "invite" | "share" | "delete";
 const MEGSY_APP_ICON = "/favicon.png";
 
 const MegsySidebarToggleIcon = () => (
-  // Borderless menu glyph — no outer panel frame, just clean strokes
+  // Clear sidebar/panel-left icon: panel outline with a left rail + content lines
   <svg
     width="22"
     height="22"
@@ -40,31 +40,41 @@ const MegsySidebarToggleIcon = () => (
     aria-hidden="true"
     className="h-[22px] w-[22px]"
   >
-    <line
-      x1="4"
-      y1="6.25"
-      x2="20"
-      y2="6.25"
+    <rect
+      x="3.25"
+      y="4.5"
+      width="17.5"
+      height="15"
+      rx="3.5"
       stroke="currentColor"
-      strokeWidth="1.7"
+      strokeWidth="1.6"
+    />
+    <line x1="9.25" y1="4.5" x2="9.25" y2="19.5" stroke="currentColor" strokeWidth="1.6" />
+    <line
+      x1="5.5"
+      y1="9"
+      x2="7"
+      y2="9"
+      stroke="currentColor"
+      strokeWidth="1.6"
       strokeLinecap="round"
     />
     <line
-      x1="4"
+      x1="5.5"
       y1="12"
-      x2="20"
+      x2="7"
       y2="12"
       stroke="currentColor"
-      strokeWidth="1.7"
+      strokeWidth="1.6"
       strokeLinecap="round"
     />
     <line
-      x1="4"
-      y1="17.75"
-      x2="13.5"
-      y2="17.75"
+      x1="5.5"
+      y1="15"
+      x2="7"
+      y2="15"
       stroke="currentColor"
-      strokeWidth="1.7"
+      strokeWidth="1.6"
       strokeLinecap="round"
     />
   </svg>
