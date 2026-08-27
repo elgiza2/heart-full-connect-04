@@ -143,19 +143,21 @@ export function ChatComposerSection(props: ChatComposerSectionProps) {
 
             {/* Mode chips row removed by design: modes live in the + menu. */}
 
-            {starterChipsVisible ? (
-              <StarterCards
-                className="mb-3"
-                onPick={(_prompt, mode) => {
-                  // Cards only turn the service chip on — they never prefill text.
-                  if (mode) {
-                    d.handleModeChange?.(mode);
-                    setModesShown(false);
-                  }
-                }}
-
-              />
-            ) : null}
+            <AnimatePresence initial={false} mode="popLayout">
+              {starterChipsVisible ? (
+                <StarterCards
+                  key="starter-chips"
+                  className="mt-1 mb-1.5"
+                  onPick={(_prompt, mode) => {
+                    // Cards only turn the service chip on — they never prefill text.
+                    if (mode) {
+                      d.handleModeChange?.(mode);
+                      setModesShown(false);
+                    }
+                  }}
+                />
+              ) : null}
+            </AnimatePresence>
 
 
             <div className="md:contents">
