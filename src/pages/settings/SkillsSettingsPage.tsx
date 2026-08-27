@@ -514,9 +514,9 @@ function SkillAvatar({ name, enabled }: { name: string; enabled: boolean }) {
   return (
     <div
       className={cn(
-        "shrink-0 w-10 h-10 rounded-full grid place-items-center text-[14px] font-semibold",
+        "shrink-0 w-11 h-11 rounded-2xl grid place-items-center text-[15px] font-bold transition-colors",
         enabled
-          ? "bg-primary/15 text-primary"
+          ? "bg-primary/12 text-primary"
           : "bg-[color:var(--mn-sep)] text-[color:var(--mn-muted)]",
       )}
     >
@@ -527,11 +527,13 @@ function SkillAvatar({ name, enabled }: { name: string; enabled: boolean }) {
 
 function SkillRowCard({
   skill,
+  index = 0,
   onEdit,
   onDelete,
   onToggle,
 }: {
   skill: Skill;
+  index?: number;
   onEdit: () => void;
   onDelete: () => void;
   onToggle: (v: boolean) => void;
@@ -539,17 +541,19 @@ function SkillRowCard({
   const enabled = skill.is_enabled !== false;
 
   return (
-    <div
-      className={cn(
-        "rounded-[14px] bg-[var(--mn-card)] px-4 py-3.5 transition-opacity",
-        !enabled && "opacity-70",
-      )}
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+      animate={{ opacity: enabled ? 1 : 0.72, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -8, scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 420, damping: 32, delay: Math.min(index, 6) * 0.03 }}
+      className="group rounded-[18px] bg-[var(--mn-card)] px-4 py-4"
     >
       <div className="flex items-start gap-3">
         <SkillAvatar name={skill.name} enabled={enabled} />
         <button onClick={onEdit} className="min-w-0 flex-1 text-left">
           <div className="flex items-center gap-1.5">
-            <p className="text-[14.5px] font-semibold text-[color:var(--mn-fg)] truncate">
+            <p className="text-[15px] font-semibold text-[color:var(--mn-fg)] truncate">
               {skill.name}
             </p>
             {skill.source === "system" && (
@@ -557,33 +561,50 @@ function SkillRowCard({
             )}
           </div>
           {skill.description ? (
-            <p className="mt-0.5 text-[12.5px] leading-snug text-[color:var(--mn-muted)] line-clamp-2">
+            <p className="mt-1 text-[12.5px] leading-snug text-[color:var(--mn-muted)] line-clamp-2">
               {skill.description}
             </p>
           ) : (
-            <p className="mt-0.5 text-[12.5px] text-[color:var(--mn-muted)]/70 italic">
+            <p className="mt-1 text-[12.5px] text-[color:var(--mn-muted)]/70 italic">
               No description
             </p>
           )}
         </button>
-        <Switch checked={enabled} onCheckedChange={onToggle} className="mt-0.5 shrink-0" />
+        <Switch checked={enabled} onCheckedChange={onToggle} className="mt-1 shrink-0" />
       </div>
-      <div className="mt-3 flex items-center justify-end gap-1 -mb-1 -mr-1.5">
-        <button
-          onClick={onEdit}
-          className="h-7 px-2.5 rounded-full text-[12px] font-medium text-[color:var(--mn-muted)] hover:text-[color:var(--mn-fg)] hover:bg-[color:var(--mn-sep)] transition-colors"
+
+      <div className="mt-3.5 flex items-center justify-between gap-2 border-t border-[color:var(--mn-sep)] pt-3">
+        <span
+          className={cn(
+            "inline-flex items-center gap-1.5 text-[11.5px] font-semibold",
+            enabled ? "text-primary" : "text-[color:var(--mn-muted)]",
+          )}
         >
-          Edit
-        </button>
-        <button
-          onClick={onDelete}
-          aria-label="Delete skill"
-          className="h-7 w-7 rounded-full grid place-items-center text-[color:var(--mn-muted)] hover:text-[color:var(--mn-danger)] hover:bg-[color:var(--mn-sep)] transition-colors"
-        >
-          <Trash2 className="w-3.5 h-3.5" />
-        </button>
+          <span
+            className={cn(
+              "w-1.5 h-1.5 rounded-full",
+              enabled ? "bg-primary" : "bg-[color:var(--mn-muted)]",
+            )}
+          />
+          {enabled ? "Active in chat" : "Paused"}
+        </span>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={onEdit}
+            className="h-8 px-3 rounded-full text-[12px] font-medium text-[color:var(--mn-muted)] hover:text-[color:var(--mn-fg)] hover:bg-[color:var(--mn-sep)] transition-colors"
+          >
+            Edit
+          </button>
+          <button
+            onClick={onDelete}
+            aria-label="Delete skill"
+            className="h-8 w-8 rounded-full grid place-items-center text-[color:var(--mn-muted)] hover:text-[color:var(--mn-danger)] hover:bg-[color:var(--mn-sep)] transition-colors"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
