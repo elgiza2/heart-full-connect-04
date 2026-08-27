@@ -351,30 +351,27 @@ export default function SkillsSettingsPage() {
         )}
       </div>
 
-      {/* Featured */}
-      <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
-        className="rounded-[22px] bg-[var(--mn-card)] px-6 pt-7 pb-6 text-center"
+      {/* Featured — compact */}
+      <button
+        onClick={() => navigate("/settings/skills/new")}
+        className="w-full flex items-center gap-3.5 rounded-[18px] bg-[var(--mn-card)] px-4 py-3.5 text-left active:scale-[0.99] transition-transform"
       >
-        <div className="mx-auto w-16 h-16 rounded-[20px] grid place-items-center bg-primary/10">
-          <Wand2 className="w-7 h-7 text-primary" strokeWidth={1.7} />
-        </div>
-        <p className="mt-4 text-[17px] font-semibold text-[color:var(--mn-fg)]">Build a skill in a minute</p>
-        <p className="mt-1.5 mx-auto max-w-[280px] text-[12.5px] leading-relaxed text-[color:var(--mn-muted)]">
-          Describe the expert you need and Megsy writes the instructions, triggers and tools for you.
-        </p>
-        <button
-          onClick={() => navigate("/settings/skills/new")}
-          className="mt-4 inline-flex items-center gap-1.5 h-9 px-5 rounded-full text-[13px] font-semibold bg-[color:var(--mn-sep)] text-[color:var(--mn-fg)] active:scale-[0.97] transition-transform"
-        >
-          Try now
-        </button>
-      </motion.div>
+        <span className="shrink-0 w-11 h-11 rounded-[14px] grid place-items-center bg-primary/10">
+          <Wand2 className="w-5 h-5 text-primary" strokeWidth={1.8} />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-[14.5px] font-semibold text-[color:var(--mn-fg)]">
+            Build a skill in a minute
+          </span>
+          <span className="mt-0.5 block text-[12px] leading-snug text-[color:var(--mn-muted)] line-clamp-1">
+            Describe the expert you need — Megsy writes the rest.
+          </span>
+        </span>
+        <ChevronRight className="w-4 h-4 shrink-0 text-[color:var(--mn-muted)]" />
+      </button>
 
       {/* Filters */}
-      <div className="-mx-1 flex items-center gap-2 overflow-x-auto px-1 pb-0.5 no-scrollbar">
+      <div className="-mx-1 flex items-center gap-1.5 overflow-x-auto px-1 pb-0.5 no-scrollbar">
         {(
           [
             { id: "all" as const, label: "All", count: mySkills.length },
@@ -385,10 +382,10 @@ export default function SkillsSettingsPage() {
             key={t.id}
             onClick={() => setTab(t.id)}
             className={cn(
-              "shrink-0 h-9 px-4 rounded-full text-[13px] font-medium transition-colors",
+              "shrink-0 h-8 px-3.5 rounded-full text-[12.5px] transition-colors",
               tab === t.id
-                ? "bg-[color:var(--mn-sep)] text-[color:var(--mn-fg)] font-semibold"
-                : "text-[color:var(--mn-muted)]",
+                ? "bg-[color:var(--mn-fg)] text-[color:var(--mn-card)] font-semibold"
+                : "bg-[color:var(--mn-sep)]/60 text-[color:var(--mn-muted)] font-medium",
             )}
           >
             {t.label}
@@ -397,7 +394,7 @@ export default function SkillsSettingsPage() {
         ))}
         <button
           onClick={() => navigate("/settings/skills/library")}
-          className="shrink-0 h-9 px-4 rounded-full text-[13px] font-medium text-[color:var(--mn-muted)] transition-colors"
+          className="shrink-0 h-8 px-3.5 rounded-full text-[12.5px] font-medium bg-[color:var(--mn-sep)]/60 text-[color:var(--mn-muted)]"
         >
           Library
           {librarySkills.length > 0 && (
@@ -408,9 +405,9 @@ export default function SkillsSettingsPage() {
 
       {/* My skills */}
       {loading ? (
-        <div className="space-y-2.5">
+        <div className="rounded-[18px] bg-[var(--mn-card)] overflow-hidden">
           {[0, 1, 2].map((i) => (
-            <div key={i} className="h-[78px] rounded-[18px] bg-[var(--mn-card)] animate-pulse" />
+            <div key={i} className="h-[68px] border-b border-[color:var(--mn-sep)]/60 last:border-0 animate-pulse" />
           ))}
         </div>
       ) : visible.length === 0 ? (
@@ -442,8 +439,8 @@ export default function SkillsSettingsPage() {
           </div>
         </div>
       ) : (
-        <div className="space-y-2">
-          <AnimatePresence initial={false} mode="popLayout">
+        <div className="rounded-[18px] bg-[var(--mn-card)] overflow-hidden">
+          <AnimatePresence initial={false}>
             {visible.map((s, i) => (
               <SkillRowCard
                 key={s.id}
@@ -466,14 +463,13 @@ export default function SkillsSettingsPage() {
           </p>
           <div className="flex flex-wrap gap-2">
             {SUGGESTIONS.slice(0, 6).map((s) => (
-              <motion.button
+              <button
                 key={s}
-                whileTap={{ scale: 0.94 }}
                 onClick={() => navigate("/settings/skills/new", { state: { seed: s } })}
-                className="inline-flex items-center gap-1.5 px-3.5 h-9 rounded-full text-[12.5px] bg-[color:var(--mn-sep)]/60 text-[color:var(--mn-muted)] hover:text-[color:var(--mn-fg)] transition-colors"
+                className="inline-flex items-center gap-1.5 px-3.5 h-8 rounded-full text-[12.5px] bg-[color:var(--mn-sep)]/60 text-[color:var(--mn-muted)] active:scale-[0.96] transition-transform"
               >
                 {s}
-              </motion.button>
+              </button>
             ))}
           </div>
         </div>
@@ -481,6 +477,7 @@ export default function SkillsSettingsPage() {
     </SubShell>
   );
 }
+
 
 function SkillAvatar({ name, enabled }: { name: string; enabled: boolean }) {
   const initial = (name.trim()[0] || "?").toUpperCase();
