@@ -328,8 +328,47 @@ export default function SkillsSettingsPage() {
         }}
       />
 
+      {/* Overview */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+        className="rounded-[20px] bg-[var(--mn-card)] p-5"
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <p className="text-[19px] font-bold leading-tight text-[color:var(--mn-fg)]">
+              Your skill library
+            </p>
+            <p className="mt-1.5 text-[12.5px] leading-relaxed text-[color:var(--mn-muted)] max-w-[300px]">
+              Megsy picks the right expert automatically while you chat.
+            </p>
+          </div>
+          <span className="shrink-0 w-11 h-11 rounded-2xl grid place-items-center bg-primary/12">
+            <Sparkles className="w-5 h-5 text-primary" strokeWidth={1.9} />
+          </span>
+        </div>
+        <div className="mt-4 grid grid-cols-3 gap-2">
+          {[
+            { label: "Skills", value: mySkills.length },
+            { label: "Enabled", value: enabledCount },
+            { label: "Library", value: librarySkills.length },
+          ].map((stat) => (
+            <div
+              key={stat.label}
+              className="rounded-[14px] px-3 py-2.5 bg-[color:var(--mn-sep)]/60"
+            >
+              <p className="text-[17px] font-bold tabular-nums text-[color:var(--mn-fg)]">
+                {stat.value}
+              </p>
+              <p className="text-[11px] font-medium text-[color:var(--mn-muted)]">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
       {/* Search */}
-      <div className="flex items-center gap-2 h-11 px-4 rounded-[14px] bg-[var(--mn-card)]">
+      <div className="flex items-center gap-2 h-12 px-4 rounded-[16px] bg-[var(--mn-card)] focus-within:ring-2 focus-within:ring-primary/25 transition-shadow">
         <Search className="w-4 h-4 text-[color:var(--mn-muted)] shrink-0" />
         <input
           value={query}
@@ -337,11 +376,20 @@ export default function SkillsSettingsPage() {
           placeholder="Search skills"
           className="flex-1 min-w-0 bg-transparent outline-none text-[14px] text-[color:var(--mn-fg)] placeholder:text-[color:var(--mn-muted)]"
         />
+        {query && (
+          <button
+            onClick={() => setQuery("")}
+            aria-label="Clear search"
+            className="h-6 w-6 rounded-full grid place-items-center text-[color:var(--mn-muted)] hover:bg-[color:var(--mn-sep)]"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        )}
       </div>
 
       {/* Tabs + official library */}
       <div className="flex items-center gap-2">
-        <div className="flex-1 flex items-center gap-1 h-10 p-1 rounded-full bg-[var(--mn-card)]">
+        <div className="flex-1 flex items-center gap-1 h-11 p-1 rounded-full bg-[var(--mn-card)]">
           {(
             [
               { id: "all" as const, label: "All", count: mySkills.length },
@@ -351,20 +399,30 @@ export default function SkillsSettingsPage() {
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={cn(
-                "flex-1 h-8 rounded-full text-[12.5px] font-semibold transition-colors",
-                tab === t.id
-                  ? "bg-[color:var(--mn-fg)] text-[var(--mn-card)]"
-                  : "text-[color:var(--mn-muted)]",
-              )}
+              className="relative flex-1 h-9 rounded-full text-[12.5px] font-semibold transition-colors"
             >
-              {t.label} {t.count > 0 && <span className="tabular-nums opacity-70">{t.count}</span>}
+              {tab === t.id && (
+                <motion.span
+                  layoutId="skills-tab-pill"
+                  transition={{ type: "spring", stiffness: 480, damping: 36 }}
+                  className="absolute inset-0 rounded-full bg-[color:var(--mn-fg)]"
+                />
+              )}
+              <span
+                className={cn(
+                  "relative z-10",
+                  tab === t.id ? "text-[var(--mn-card)]" : "text-[color:var(--mn-muted)]",
+                )}
+              >
+                {t.label}{" "}
+                {t.count > 0 && <span className="tabular-nums opacity-70">{t.count}</span>}
+              </span>
             </button>
           ))}
         </div>
         <button
           onClick={() => navigate("/settings/skills/library")}
-          className="shrink-0 flex items-center gap-2 h-10 px-3.5 rounded-full bg-[var(--mn-card)] text-[12.5px] font-medium text-[color:var(--mn-fg)]"
+          className="shrink-0 flex items-center gap-2 h-11 px-4 rounded-full bg-[var(--mn-card)] text-[12.5px] font-medium text-[color:var(--mn-fg)] active:scale-[0.97] transition-transform"
         >
           <ShieldCheck className="w-3.5 h-3.5 text-[color:var(--mn-muted)]" />
           Library
