@@ -544,8 +544,6 @@ function SkillRowCard({
           <Switch checked={enabled} onCheckedChange={onToggle} />
         </div>
       </div>
-
-      </div>
     </motion.div>
   );
 }
