@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { promptUpgrade } from "@/lib/upgradeMoment";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -97,7 +98,7 @@ export default function MediaModelPickerSheet({
                   type="button"
                   onClick={() => {
                     if (locked) {
-                      toast.error("Upgrade to Starter or higher to use this model.");
+                      promptUpgrade(m.name);
                       onOpenChange(false);
                       navigate("/pricing");
                       return;
