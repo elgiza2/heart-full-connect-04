@@ -71,45 +71,71 @@ const handleCardClick = (
 /** Desktop-only: compact icon chips shown below the composer (no images). */
 export function StarterChips({ onPick, className = "" }: StarterCardsProps) {
   return (
-    <div
-      className={`hidden md:flex flex-wrap items-center justify-center gap-2 ${className}`}
-    >
-      {CARDS.map((c) => (
-        <button
-          key={c.id}
-          type="button"
-          onClick={() => handleCardClick(c, onPick)}
-          className="ng-lift flex items-center gap-2 rounded-lg border border-border/40 bg-background hover:bg-accent/60 transition-all px-3.5 h-9 shadow-sm"
-        >
-          <c.Icon className="w-[15px] h-[15px] text-foreground/70 shrink-0" strokeWidth={1.9} />
-          <span className="text-[13px] font-medium text-foreground whitespace-nowrap">
-            {c.title}
-          </span>
-        </button>
-      ))}
-    </div>
+    <AnimatePresence initial={false}>
+      <motion.div
+        key="starter-chips-desktop"
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 6 }}
+        transition={CHIP_SPRING}
+        className={`hidden md:flex flex-wrap items-center justify-center gap-2 ${className}`}
+      >
+        {CARDS.map((c, i) => (
+          <motion.button
+            key={c.id}
+            type="button"
+            layout
+            onClick={() => handleCardClick(c, onPick)}
+            initial={{ opacity: 0, y: 8, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 6, scale: 0.96 }}
+            transition={{ ...CHIP_SPRING, delay: i * 0.025 }}
+            whileTap={{ scale: 0.94 }}
+            whileHover={{ y: -2 }}
+            className="flex items-center gap-2 rounded-lg border border-border/40 bg-background hover:bg-accent/60 px-3.5 h-9 shadow-sm"
+          >
+            <c.Icon className="w-[15px] h-[15px] text-foreground/70 shrink-0" strokeWidth={1.9} />
+            <span className="text-[13px] font-medium text-foreground whitespace-nowrap">
+              {c.title}
+            </span>
+          </motion.button>
+        ))}
+      </motion.div>
+    </AnimatePresence>
   );
 }
 
 export function StarterCards({ onPick, className = "" }: StarterCardsProps) {
   return (
-    <div className={`w-full md:hidden ${className}`}>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 10 }}
+      transition={CHIP_SPRING}
+      className={`w-full md:hidden ${className}`}
+    >
       <div className="flex gap-2 overflow-x-auto px-2 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden snap-x">
-        {CARDS.map((c) => (
-          <button
+        {CARDS.map((c, i) => (
+          <motion.button
             key={c.id}
             type="button"
+            layout
             onClick={() => handleCardClick(c, onPick)}
-            className="snap-start shrink-0 inline-flex items-center gap-2 rounded-lg border border-border/40 bg-background hover:bg-accent/60 active:scale-[0.98] transition-all px-3.5 h-10 shadow-sm"
+            initial={{ opacity: 0, y: 10, scale: 0.94 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.94 }}
+            transition={{ ...CHIP_SPRING, delay: i * 0.03 }}
+            whileTap={{ scale: 0.92 }}
+            className="snap-start shrink-0 inline-flex items-center gap-2 rounded-lg border border-border/40 bg-background hover:bg-accent/60 px-3.5 h-10 shadow-sm"
           >
             <c.Icon className="w-4 h-4 text-foreground/70 shrink-0" strokeWidth={1.9} />
             <span className="text-[13px] font-medium text-foreground whitespace-nowrap">
               {c.title}
             </span>
-          </button>
+          </motion.button>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
