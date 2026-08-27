@@ -220,7 +220,7 @@ export default function MobilePricingScreen({
                 className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-start transition-colors duration-200"
                 style={{
                   background: selected ? c.card : "transparent",
-                  border: `1px solid ${selected ? c.selBorder : c.line}`,
+                  border: "none",
                 }}
               >
                 <span
