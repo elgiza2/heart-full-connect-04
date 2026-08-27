@@ -1,6 +1,7 @@
 import { Check, Lock } from "lucide-react";
 import { m as motion } from "framer-motion";
 import { toast } from "sonner";
+import { promptUpgrade } from "@/lib/upgradeMoment";
 import type { ResearchDepth } from "../hooks/useChatTier";
 import { isPaidUser } from "@/lib/subscriptionGating";
 
@@ -42,7 +43,7 @@ export function MobileResearchDepthPanel({ researchDepth, setResearchDepth, user
               type="button"
               onClick={() => {
                 if (locked) {
-                  toast.info(`${label} is available on premium plans only`);
+                  promptUpgrade(label);
                   return;
                 }
                 setResearchDepth(id);

@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import { toast } from "sonner";
+import { promptUpgrade } from "@/lib/upgradeMoment";
 import type { AgentModel } from "@/lib/agentRegistry";
 import {
   groupModelsByProvider,
@@ -517,9 +518,7 @@ export default function ComposerModelMenu({
                               key={item.id}
                               onClick={() => {
                                 if (locked) {
-                                  toast.info(
-                                    `${item.label} is available on premium plans only`,
-                                  );
+                                  promptUpgrade(item.label);
                                   return;
                                 }
 
@@ -576,7 +575,7 @@ export default function ComposerModelMenu({
                                 key={choice.slug}
                                 onClick={() => {
                                   if (locked) {
-                                    toast.info(`${choice.name} is available on premium plans only`);
+                                    promptUpgrade(choice.name);
                                     return;
                                   }
                                   if (mode !== "images") onModeChange?.("images");
@@ -632,7 +631,7 @@ export default function ComposerModelMenu({
                                 key={choice.slug}
                                 onClick={() => {
                                   if (locked) {
-                                    toast.info(`${choice.name} is available on premium plans only`);
+                                    promptUpgrade(choice.name);
                                     return;
                                   }
                                   if (mode !== "video") onModeChange?.("video");
@@ -819,7 +818,7 @@ export default function ComposerModelMenu({
                                       variants={menuItemVariants}
                                       onClick={() => {
                                         if (locked) {
-                                          toast.info(`${choice.name} is available on premium plans only`);
+                                          promptUpgrade(choice.name);
                                           return;
                                         }
                                         onMediaModelSelect(choice);
@@ -871,7 +870,7 @@ export default function ComposerModelMenu({
                             key={item.id}
                             onClick={() => {
                               if (locked) {
-                                toast.info(`${item.label} is available on premium plans only`);
+                                promptUpgrade(item.label);
                                 return;
                               }
                               if (item.kind === "tier") onTierSelect(item.id as "lite" | "pro" | "max");

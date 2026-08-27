@@ -3,6 +3,7 @@ import { Check, ChevronDown, Lock } from "lucide-react";
 import { Suspense, lazy, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
+import { promptUpgrade } from "@/lib/upgradeMoment";
 import { useNavigate } from "react-router-dom";
 import { glassModelMenu, glassModelMenuStyle } from "@/components/model-picker/glassModelMenuStyles";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -85,7 +86,7 @@ export default function ResearchDepthDropdown({
             type="button"
             onClick={() => {
               if (locked) {
-                toast.error("Upgrade to Starter or higher to use this depth.");
+                promptUpgrade(d.label);
                 setResearchDepthOpen(false);
                 navigate("/pricing");
                 return;
