@@ -29,9 +29,14 @@ import {
   Smartphone,
   ScanSearch,
   Bot,
-  
+  Aperture,
+  Images,
+  Paperclip,
+  Blocks,
+  Radar,
 
 } from "lucide-react";
+
 import { toast } from "sonner";
 import { promptUpgrade } from "@/lib/upgradeMoment";
 import { supabase } from "@/integrations/supabase/client";
