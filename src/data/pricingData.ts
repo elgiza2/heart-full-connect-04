@@ -248,7 +248,7 @@ export const SERVICES_GUIDE: { name: string; desc: string }[] = [
   },
   {
     name: "Video Generation",
-    desc: "Generate video on every paid plan. Each video uses MC from your monthly balance — never charged extra.",
+    desc: "Premium video models use MC from your monthly balance — about 40 videos on Pro and 120 on Max. DeAPI video models are always free and unlimited.",
   },
   {
     name: "Megsy OS",
@@ -256,7 +256,8 @@ export const SERVICES_GUIDE: { name: string; desc: string }[] = [
   },
   {
     name: "Megsy Credits (MC)",
-    desc: "MC covers video, image and premium model usage. Credits refresh at the start of each billing cycle and don't roll over.",
+    desc: "Image generation is unlimited. MC is spent on premium video and premium model runs only, and refreshes at the start of each billing cycle."
+      ,
   },
   {
     name: "Team Workspace",
@@ -279,11 +280,11 @@ export const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "What are Megsy Credits (MC)?",
-    a: "Chat is unlimited on every paid plan. MC is a separate monthly balance used for image and video generation and premium model runs — 240 MC on Pro and 600 MC on Max.",
+    a: "Chat and image generation are unlimited on every paid plan. MC is a separate monthly balance used for premium video generation and premium model runs — 240 MC on Pro (about 40 videos) and 600 MC on Max (about 120 videos). DeAPI video models never cost MC.",
   },
   {
     q: "What happens when I run out of MC?",
-    a: "Chat, docs, slides and research stay available. Video, images and premium runs need MC, so you can top up anytime from Billing or wait for your next renewal — MC refresh at the start of each billing cycle.",
+    a: "Chat, images, docs, slides and research stay available — images are always unlimited, and free DeAPI video models keep working. Only premium video and premium model runs need MC, so you can top up anytime from Billing or wait for your next renewal.",
   },
   {
     q: "Do unused credits roll over?",
