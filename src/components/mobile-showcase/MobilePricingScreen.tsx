@@ -120,29 +120,29 @@ export default function MobilePricingScreen({
       `}</style>
 
       {/* Header */}
-      <header className="relative shrink-0 px-4" style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 12px)" }}>
+      <header className="relative shrink-0 px-4" style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 8px)" }}>
         <MobileSidebarButton
           onClick={() => onMenuClick?.()}
           ariaLabel="Menu"
-          className={isLight ? "!text-background" : "!text-foreground"}
+          className="text-foreground"
         />
       </header>
 
-      <div className="flex flex-1 flex-col justify-start gap-5 px-5 pb-2 pt-3">
+      <div className="flex flex-1 flex-col justify-start gap-4 px-5 pb-2 pt-2">
         {/* Plan card fan */}
-        <div className="mps-rise mx-auto flex h-[124px] w-full max-w-[360px] items-center justify-center" style={{ animationDelay: "20ms" }}>
+        <div className="mps-rise mx-auto flex h-[148px] w-full max-w-[420px] items-center justify-center" style={{ animationDelay: "20ms" }}>
           <PlanCard
             plan="starter"
-            className="h-[88px] w-[128px] shrink-0 -mr-9"
+            className="h-[110px] w-[150px] shrink-0 -mr-8"
             style={{ transform: "rotate(-12deg) translateY(4px)" }}
           />
           <PlanCard
             plan="pro"
-            className="z-10 h-[102px] w-[148px] shrink-0"
+            className="z-10 h-[128px] w-[175px] shrink-0"
           />
           <PlanCard
             plan="elite"
-            className="h-[88px] w-[128px] shrink-0 -ml-9"
+            className="h-[110px] w-[150px] shrink-0 -ml-8"
             style={{ transform: "rotate(12deg) translateY(4px)" }}
           />
         </div>
