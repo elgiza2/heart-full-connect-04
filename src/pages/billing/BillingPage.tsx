@@ -119,6 +119,120 @@ const BillingPage = () => {
     }
   };
 
+  const monthlyPrice = sub?.amount_cents ? Math.round(sub.amount_cents / 100) : null;
+  const halfPrice = monthlyPrice ? saveOfferPrice(monthlyPrice) : null;
+
+  const sendRetentionRequest = async (kind: "discount" | "pause", detail: string) => {
+    setSubmitting(true);
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not signed in");
+      const { error } = await supabase.from("contact_submissions").insert({
+        user_id: user.id,
+        subject: kind === "discount" ? "Retention offer — 50% for 2 months" : "Subscription pause request",
+        message: detail,
+      } as any);
+      if (error) throw error;
+      toast.success(
+        kind === "discount"
+          ? "Your discount request is in — we'll apply it within a few minutes."
+          : "Pause requested. We'll freeze your plan and keep everything saved.",
+      );
+      setCancelOpen(false);
+      setStep("offer");
+      setReason("");
+      setImprovement("");
+    } catch (e: any) {
+      toast.error(e?.message || "Could not submit request");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const SaveOffer = (
+    <GlassCard>
+      <div style={{ padding: 16, display: "grid", gap: 14 }}>
+        <div>
+          <p style={{ fontSize: 15, fontWeight: 600, color: "#fff" }}>{SAVE_OFFER.titleEn}</p>
+          <p style={{ fontSize: 13, color: "var(--overlay-white-70)", marginTop: 6, lineHeight: 1.55 }}>
+            {SAVE_OFFER.bodyEn}
+          </p>
+        </div>
+
+        {halfPrice != null && monthlyPrice != null && (
+          <div
+            style={{
+              borderRadius: 14,
+              border: "1px solid var(--overlay-white-14)",
+              background: "var(--overlay-white-04)",
+              padding: 14,
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+              <span style={{ fontSize: 26, fontWeight: 600, color: "#fff" }}>
+                {halfPrice} {sub?.currency || "EGP"}
+              </span>
+              <span style={{ fontSize: 13, color: "var(--overlay-white-70)", textDecoration: "line-through" }}>
+                {monthlyPrice} {sub?.currency || "EGP"}
+              </span>
+              <span style={{ fontSize: 12.5, color: "var(--overlay-white-70)" }}>
+                / month for {SAVE_OFFER.months} months
+              </span>
+            </div>
+          </div>
+        )}
+
+        <div style={{ display: "grid", gap: 8 }}>
+          <GlassPrimaryButton
+            onClick={() =>
+              sendRetentionRequest(
+                "discount",
+                `Customer accepted the retention offer: ${SAVE_OFFER.discountPercent}% off for ${SAVE_OFFER.months} months on plan ${sub?.plan || plan}.`,
+              )
+            }
+            disabled={submitting}
+          >
+            {submitting ? "Sending…" : SAVE_OFFER.discountCtaEn}
+          </GlassPrimaryButton>
+
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
+            <span style={{ fontSize: 12.5, color: "var(--overlay-white-70)" }}>Or pause for</span>
+            {SAVE_OFFER.pauseMonths.map((m) => (
+              <button
+                key={m}
+                disabled={submitting}
+                onClick={() =>
+                  sendRetentionRequest("pause", `Customer asked to pause the subscription for ${m} month(s).`)
+                }
+                style={{
+                  padding: "8px 12px",
+                  borderRadius: 999,
+                  fontSize: 12.5,
+                  fontWeight: 500,
+                  border: "1px solid var(--overlay-white-14)",
+                  background: "var(--overlay-white-04)",
+                  color: "#fff",
+                  cursor: "pointer",
+                }}
+              >
+                {m} {m === 1 ? "month" : "months"}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="ng-actions" style={{ marginTop: 4 }}>
+          <GlassSecondaryButton onClick={() => setStep("reason")}>
+            No thanks, cancel
+          </GlassSecondaryButton>
+          <GlassPrimaryButton onClick={() => setCancelOpen(false)}>Keep plan</GlassPrimaryButton>
+        </div>
+      </div>
+    </GlassCard>
+  );
+
   const CancelForm = (
     <GlassCard>
       <div style={{ padding: 16, display: "grid", gap: 14 }}>
@@ -183,6 +297,9 @@ const BillingPage = () => {
       </div>
     </GlassCard>
   );
+
+  const CancelFlow = SAVE_OFFER.enabled && step === "offer" ? SaveOffer : CancelForm;
+
 
   if (isMobile) {
     const planLabel = (plan || "Free").toString();
