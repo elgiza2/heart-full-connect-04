@@ -529,7 +529,7 @@ const PricingPage = () => {
         /* Pricing cards: switch red gradient for a clean light card */
         html[data-theme="light"] [data-pricing-scope] .pricing-card-glass {
           background: hsl(var(--card)) !important;
-          border: 1px solid hsl(var(--border)) !important;
+          border: none !important;
           box-shadow: 0 10px 30px -18px rgba(0,0,0,0.15) !important;
           color: hsl(var(--foreground)) !important;
         }
@@ -602,11 +602,10 @@ const PricingPage = () => {
           background: linear-gradient(160deg, rgba(220,60,70,0.34) 0%, rgba(140,24,32,0.44) 45%, rgba(50,8,12,0.6) 100%);
           backdrop-filter: blur(24px) saturate(160%);
           -webkit-backdrop-filter: blur(24px) saturate(160%);
-          border: 1px solid rgba(255,170,170,0.24);
+          border: none;
           box-shadow: 0 20px 40px -20px rgba(0,0,0,0.5);
           transition:
             transform 0.55s cubic-bezier(0.34, 1.35, 0.64, 1),
-            border-color 0.4s ease,
             background 0.4s ease,
             box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1);
           color: #ffffff;
@@ -615,15 +614,14 @@ const PricingPage = () => {
         .pricing-card-glass, .pricing-card-glass * { color: #ffffff !important; }
         .pricing-card-glass:hover {
           transform: translateY(-6px) scale(1.008);
-          border-color: rgba(255,200,200,0.55);
-          box-shadow: 0 40px 80px -24px rgba(220,60,70,0.35), 0 0 0 1px rgba(255,200,200,0.15);
+          box-shadow: 0 40px 80px -24px rgba(220,60,70,0.35);
         }
         .pricing-card-glass:active {
           transform: translateY(-3px) scale(0.998);
           transition-duration: 0.15s;
         }
         .pricing-card-elite {
-          border: 1px solid rgba(255,200,200,0.42);
+          border: none;
           background: linear-gradient(160deg, rgba(240,90,100,0.42) 0%, rgba(170,30,40,0.52) 45%, rgba(60,10,14,0.65) 100%);
           box-shadow: 0 30px 60px -20px rgba(220,60,70,0.4);
         }
