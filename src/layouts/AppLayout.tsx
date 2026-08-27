@@ -72,8 +72,10 @@ const AppLayout = ({
     <div className={cn("flex min-h-[100dvh] w-full flex-col", isSettings ? "bg-transparent" : "bg-background")}>
       <SkipToContent />
       <main id="main" className="flex-1 min-w-0 overflow-visible">{children}</main>
+      <UpgradeMomentHost />
     </div>
   );
+
 };
 
 export default AppLayout;
