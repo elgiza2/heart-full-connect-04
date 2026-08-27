@@ -1,5 +1,6 @@
 
 import { useState, type ReactNode } from "react";
+import { AnimatePresence } from "framer-motion";
 import ComposerAttachments from "./ComposerAttachments";
 import { RemoteAiBusyBanner } from "./RemoteAiBusyBanner";
 import { MentionDropdown } from "./MentionDropdown";
