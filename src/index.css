@@ -3676,9 +3676,12 @@ select,
   a[href],
   [role="button"],
   [role="tab"],
-  [role="menuitem"],
-  [role="switch"] {
+  [role="menuitem"] {
     min-height: 32px;
+  }
+  /* Switches keep their intrinsic size — stretching them breaks the thumb geometry. */
+  [role="switch"] {
+    min-height: 0;
   }
 }
 
