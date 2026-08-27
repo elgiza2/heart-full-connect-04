@@ -1,17 +1,38 @@
 // =====================================================================
-// CENTRALIZED PRICING DATA — single source of truth for plans, services,
-// FAQs, and enterprise features. Imported by /pricing and by the support
-// chat's auto-built knowledge base so they NEVER drift apart.
+// CENTRALIZED PRICING DATA — single source of truth for plans, prices,
+// intro offers, services, FAQs and enterprise features.
+// Imported by /pricing (desktop + mobile), workspace plans, and the
+// support chat knowledge base so they NEVER drift apart.
+//
+// Pricing model (clean, two paid plans):
+//   Pro  $20 / month  · first month $7  · $200 / year (2 months free)
+//   Max  $40 / month  · first month $17 · $400 / year (2 months free)
 // =====================================================================
 
 export type PlanTier = "starter" | "pro" | "elite" | "business";
 
+/** Monthly Megsy Credits included with each tier. */
 export const PLAN_MONTHLY_CREDITS: Record<PlanTier, number> = {
   starter: 70,
   pro: 240,
-  elite: 500,
+  elite: 600,
   business: 1200,
 };
+
+/**
+ * Retention offer shown right after the first successful payment:
+ * "Take your second month for $7 too" with a Pay now button.
+ */
+export const SECOND_MONTH_OFFER = {
+  enabled: true,
+  price: 7,
+  /** Hours the offer stays claimable after the first payment. */
+  windowHours: 48,
+  titleEn: "Your second month for $7",
+  bodyEn:
+    "You just unlocked Pro. Lock in month two at the same $7 intro price — pay now and you are covered for two full months.",
+  ctaEn: "Pay $7 now",
+} as const;
 
 export interface PlanCardConfig {
   tier: PlanTier;
@@ -20,9 +41,11 @@ export interface PlanCardConfig {
   bg: string;
   text: string;
   subText: string;
+  /** Standard recurring monthly price. */
   monthlyPrice: number;
+  /** Yearly price = 10 × monthly (2 months free). */
   yearlyPrice: number;
-  /** Optional promotional first-month price (e.g. Pro $7 intro). */
+  /** Promotional first-month price. */
   firstMonthPrice?: number;
   monthlyCredits: string;
   yearlyCredits: string;
@@ -38,6 +61,34 @@ export interface PlanCardConfig {
   isDark?: boolean;
 }
 
+const PRO_FEATURES = [
+  "Unlimited chat with every flagship model",
+  "240 MC each month for images, video and premium runs",
+  "Deep Research with sourced, citation-backed reports",
+  "Docs & Slides — generated, editable, export to PDF/PPTX",
+  "Megsy Coder — build and deploy full apps in one click",
+  "Megsy OS agents running tasks in the background",
+  "Team workspace with shared projects and files",
+  "Priority support · cancel anytime",
+];
+
+const MAX_FEATURES = [
+  "Everything in Pro, with no daily limits anywhere",
+  "600 MC each month — 2.5× the Pro allowance",
+  "Priority compute lane — up to 3× faster generations",
+  "Unlimited parallel Megsy OS agents",
+  "Longer context, larger uploads and bigger projects",
+  "Advanced branding, presets and usage analytics",
+  "Early access to new models and features",
+  "24/7 priority support · cancel anytime",
+];
+
+const yearlyIntro = (savings: number, bonus: number) => [
+  `Save $${savings} a year — 2 months free`,
+  `+${bonus.toLocaleString("en-US")} bonus MC delivered upfront`,
+  "Price locked for 12 months",
+];
+
 export const PLANS: PlanCardConfig[] = [
   {
     tier: "pro",
@@ -47,43 +98,14 @@ export const PLANS: PlanCardConfig[] = [
     text: "#ffffff",
     subText: "rgba(255, 255, 255, 0.78)",
     monthlyPrice: 20,
-    yearlyPrice: 298,
-    firstMonthPrice: 5,
+    yearlyPrice: 200,
+    firstMonthPrice: 7,
 
     monthlyCredits: `${PLAN_MONTHLY_CREDITS.pro} MC / month`,
-    yearlyCredits: "Save $50 + 480 bonus MC",
-    features: [
-      "Unlimited AI Chat — every model, no daily caps",
-      "Unlimited Video Generation",
-      "Unlimited Images, Slides, Docs & Code — 7 days every month",
-      "Unlimited Megsy OS agents — autonomous, runs 24/7",
-      "240 MC every month for premium usage",
-      "Team workspace included",
-      "Priority email support",
-      "Cancel anytime",
-    ],
-    monthlyFeatures: [
-      "Unlimited AI Chat — every model, no daily caps",
-      "Unlimited Video Generation",
-      "Unlimited Images, Slides, Docs & Code — 7 days every month",
-      "Unlimited Megsy OS agents — autonomous, runs 24/7",
-      "240 MC every month for premium usage",
-      "Team workspace included",
-      "Priority email support",
-      "Cancel anytime",
-    ],
-    yearlyFeatures: [
-      "Save $50 vs paying monthly (2 months free)",
-      "+480 bonus MC delivered upfront",
-      "Locked-in price — no increases for 12 months",
-      "Unlimited AI Chat — every model, no daily caps",
-      "Unlimited Video Generation",
-      "Unlimited Images, Slides, Docs & Code — 7 days every month",
-      "Unlimited Megsy OS agents — autonomous, runs 24/7",
-      "240 MC every month for premium usage",
-      "Team workspace included",
-      "Priority email support",
-    ],
+    yearlyCredits: "Save $40 + 480 bonus MC",
+    features: PRO_FEATURES,
+    monthlyFeatures: PRO_FEATURES,
+    yearlyFeatures: [...yearlyIntro(40, 480), ...PRO_FEATURES.slice(0, 7)],
 
     ctaBg: "#0b1020",
     ctaText: "#ffffff",
@@ -97,49 +119,15 @@ export const PLANS: PlanCardConfig[] = [
     bg: "linear-gradient(165deg, #8b5cf6 0%, #7c3aed 55%, #6d28d9 100%)",
     text: "#ffffff",
     subText: "rgba(255, 255, 255, 0.78)",
-    monthlyPrice: 78,
-    yearlyPrice: 598,
+    monthlyPrice: 40,
+    yearlyPrice: 400,
+    firstMonthPrice: 17,
 
     monthlyCredits: `${PLAN_MONTHLY_CREDITS.elite} MC / month`,
-    yearlyCredits: "Save $118 + 1,000 bonus MC",
-    features: [
-      "Unlimited AI Chat — every model, no daily caps",
-      "Unlimited Video Generation",
-      "Unlimited Images, Slides, Docs & Code — 15 days every month",
-      "Unlimited Megsy OS agents — autonomous, runs 24/7",
-      "500 MC every month for premium usage",
-      "Priority queue — 3× faster generations",
-      "Advanced presets, branding & analytics",
-      "Team workspace included",
-      "24/7 priority chat support",
-      "Cancel anytime",
-    ],
-    monthlyFeatures: [
-      "Unlimited AI Chat — every model, no daily caps",
-      "Unlimited Video Generation",
-      "Unlimited Images, Slides, Docs & Code — 15 days every month",
-      "Unlimited Megsy OS agents — autonomous, runs 24/7",
-      "500 MC every month for premium usage",
-      "Priority queue — 3× faster generations",
-      "Advanced presets, branding & analytics",
-      "Team workspace included",
-      "24/7 priority chat support",
-      "Cancel anytime",
-    ],
-    yearlyFeatures: [
-      "Save $118 vs paying monthly (2 months free)",
-      "+1,000 bonus MC delivered upfront",
-      "Locked-in price — no increases for 12 months",
-      "Unlimited AI Chat — every model, no daily caps",
-      "Unlimited Video Generation",
-      "Unlimited Images, Slides, Docs & Code — 15 days every month",
-      "Unlimited Megsy OS agents — autonomous, runs 24/7",
-      "500 MC every month for premium usage",
-      "Priority queue — 3× faster generations",
-      "Advanced presets, branding & analytics",
-      "Team workspace included",
-      "24/7 priority chat support",
-    ],
+    yearlyCredits: "Save $80 + 1,200 bonus MC",
+    features: MAX_FEATURES,
+    monthlyFeatures: MAX_FEATURES,
+    yearlyFeatures: [...yearlyIntro(80, 1200), ...MAX_FEATURES.slice(0, 7)],
 
     ctaBg: "#0b0420",
     ctaText: "#ffffff",
@@ -150,6 +138,48 @@ export const PLANS: PlanCardConfig[] = [
   },
 ];
 
+/** Short benefit lines used by the compact mobile pricing screen. */
+export const PLAN_HIGHLIGHTS: Record<"pro" | "max", string[]> = {
+  pro: PRO_FEATURES.slice(0, 5),
+  max: MAX_FEATURES.slice(0, 5),
+};
+
+export const getPlan = (tier: PlanTier) => PLANS.find((p) => p.tier === tier);
+
+/**
+ * Price actually charged today, plus the crossed-out reference price.
+ * Monthly uses the intro (first month) price when the plan has one;
+ * yearly uses the yearly price against 12× monthly.
+ */
+export function getDisplayPrice(plan: PlanCardConfig, yearly: boolean) {
+  if (yearly) {
+    const reference = plan.monthlyPrice * 12;
+    return {
+      price: plan.yearlyPrice,
+      strike: reference,
+      isIntro: false,
+      discountLabel: `Save $${reference - plan.yearlyPrice}`,
+      unit: "year" as const,
+    };
+  }
+  const intro = plan.firstMonthPrice;
+  if (intro && intro < plan.monthlyPrice) {
+    return {
+      price: intro,
+      strike: plan.monthlyPrice,
+      isIntro: true,
+      discountLabel: `${Math.round((1 - intro / plan.monthlyPrice) * 100)}% Off`,
+      unit: "1st mo" as const,
+    };
+  }
+  return {
+    price: plan.monthlyPrice,
+    strike: plan.monthlyPrice,
+    isIntro: false,
+    discountLabel: "",
+    unit: "month" as const,
+  };
+}
 
 export const ENTERPRISE_FEATURES: string[] = [
   "Custom MC Allocation",
@@ -172,78 +202,81 @@ export const ENTERPRISE_FEATURES: string[] = [
 export const SERVICES_GUIDE: { name: string; desc: string }[] = [
   {
     name: "Unlimited Chat",
-    desc: "Talk to Megsy AI — our own model, with no daily caps. Free plan uses Megsy Lite.",
+    desc: "Talk to Megsy AI with every flagship model and no daily caps on Pro and Max. The free plan uses Megsy Lite.",
   },
   {
     name: "Image Generation",
-    desc: "Generate unlimited high-quality images during your unlimited window (7/15/30 days depending on plan). Outside the window, uses MC credits.",
+    desc: "Generate high-quality images on any paid plan. Images draw from your monthly MC balance.",
   },
   {
     name: "Slides & Presentations",
-    desc: "Create complete slide decks from a prompt — fully editable, exportable to PPT/PDF. Free plan: 3 / day.",
+    desc: "Create complete, editable decks from a prompt and export to PPTX or PDF. Free plan: 3 / day.",
   },
   {
     name: "Docs & Deep Research",
     desc: "Long-form documents and multi-source research reports with citations. Free plan: 3 of each per day.",
   },
   {
-    name: "Code Builder",
-    desc: "Build full apps and websites in natural language, with one-click deploy. Unlimited during your plan window.",
+    name: "Megsy Coder",
+    desc: "Build full apps and websites in natural language with one-click deploy. Included on every paid plan.",
   },
   {
     name: "Video Generation",
-    desc: "Generate videos on every paid plan. Each video uses MC from your monthly balance — never charged extra outside your plan.",
+    desc: "Generate video on every paid plan. Each video uses MC from your monthly balance — never charged extra.",
   },
   {
     name: "Megsy OS",
-    desc: "Your autonomous 24/7 agent. Runs tasks, monitors projects, and executes multi-step work in the background. Unlimited on all paid plans.",
+    desc: "Your autonomous 24/7 agent. Runs tasks, monitors projects and executes multi-step work in the background.",
   },
   {
     name: "Megsy Credits (MC)",
-    desc: "Credits cover video generation and any usage outside your plan windows. Credits reset at the start of each billing cycle and don't roll over.",
+    desc: "MC covers video, image and premium model usage. Credits refresh at the start of each billing cycle and don't roll over.",
   },
   {
     name: "Team Workspace",
-    desc: "Shared projects, files, and chats for your team. Pro+ includes seats; Business is unlimited.",
+    desc: "Shared projects, files and chats for your team — included on Pro and Max.",
   },
   {
     name: "Priority Queue",
-    desc: "Elite & Business get 3× faster generation speeds and skip the standard queue.",
+    desc: "Max gets a priority compute lane with up to 3× faster generations.",
   },
 ];
 
 export const FAQS: { q: string; a: string }[] = [
   {
-    q: "Can I change or cancel my plan anytime?",
-    a: "Yes. From your Billing settings you can upgrade, downgrade, or cancel anytime. Upgrades are prorated and take effect immediately; downgrades and cancellations take effect at the end of the current billing cycle, and you keep full access until then.",
+    q: "How does the $7 first month work?",
+    a: "Your first month of Pro is $7 instead of $20 (Max is $17 instead of $40). Right after your payment clears we offer you a second month at the same intro price — one tap on Pay now and you are covered for two full months. After that, the plan renews at its standard monthly price and you can cancel anytime.",
   },
   {
-    q: "What's the difference between the 'unlimited window' and Megsy Credits (MC)?",
-    a: "Chat with Megsy AI is unlimited at all times on every paid plan. Each paid plan also gives you a creation window for Images, Slides, Docs, Deep Research and Code Builder — 7 days/month on Pro, 15 days/month on Elite, and the full month on Business. Video always uses MC credits. MC is a separate balance used for video, premium usage, and anything generated outside your plan window.",
+    q: "Can I change or cancel my plan anytime?",
+    a: "Yes. From Billing settings you can upgrade, downgrade or cancel anytime. Upgrades are prorated and take effect immediately; downgrades and cancellations take effect at the end of the current cycle, and you keep full access until then.",
+  },
+  {
+    q: "What are Megsy Credits (MC)?",
+    a: "Chat is unlimited on every paid plan. MC is a separate monthly balance used for image and video generation and premium model runs — 240 MC on Pro and 600 MC on Max.",
   },
   {
     q: "What happens when I run out of MC?",
-    a: "You can keep using Chat unlimited, and anything still inside your plan window (Images, Slides, Docs, Research and Code Builder). Video and premium usage use MC, so you can top up MC anytime from Billing or wait for your next renewal — MC refresh at the start of each billing cycle.",
+    a: "Chat, docs, slides and research stay available. Video, images and premium runs need MC, so you can top up anytime from Billing or wait for your next renewal — MC refresh at the start of each billing cycle.",
   },
   {
     q: "Do unused credits roll over?",
-    a: "No. Monthly MC reset at the start of each billing cycle and don't roll over. Yearly plans get bonus MC delivered upfront (Pro +480, Elite +1,000, Business +2,400) on top of saving roughly 2 months on price.",
+    a: "No. Monthly MC reset at the start of each cycle. Yearly plans get bonus MC delivered upfront (Pro +480, Max +1,200) on top of two months free.",
   },
   {
     q: "Do prices include tax?",
-    a: "Prices are shown excluding tax. VAT/GST is calculated and added at checkout based on your billing country, and the final amount is shown before you confirm payment.",
+    a: "Prices are shown excluding tax. VAT/GST is calculated at checkout based on your billing country and shown before you confirm.",
   },
   {
     q: "Do you offer refunds?",
-    a: "Yes — new paid subscriptions (Pro and above) include a 7-day no-questions-asked refund window, provided no more than 10% of your included credits have been consumed. Credit packs are non-refundable once any credit from the pack has been spent. Failed generations are auto-refunded within minutes. Email support@megsyai.com (subject: \"Refund Request\") and we respond within 5 business days.",
+    a: "Yes — new paid subscriptions include a 7-day no-questions-asked refund window, provided no more than 10% of your included credits have been consumed. Credit packs are non-refundable once any credit has been spent. Failed generations are auto-refunded within minutes. Email support@megsyai.com (subject: \"Refund Request\") and we respond within 5 business days.",
   },
   {
     q: "Is my payment secure? Which payment methods do you accept?",
-    a: "All payments are processed by Dodo Payments, a PCI-DSS Level 1 merchant of record. Your card details never touch our servers. We accept Visa, Mastercard, American Express, JCB, UnionPay, Apple Pay, Google Pay, Amazon Pay and WeChat Pay, with 3-D Secure 2 on eligible transactions. Your bank statement will show \"DODO * MEGSY AI\".",
+    a: "All payments are processed by Dodo Payments, a PCI-DSS Level 1 merchant of record. Your card details never touch our servers. We accept Visa, Mastercard, American Express, JCB, UnionPay, Apple Pay, Google Pay, Amazon Pay and WeChat Pay, with 3-D Secure 2 on eligible transactions. Your statement will show \"DODO * MEGSY AI\".",
   },
   {
     q: "Do you offer team or enterprise plans?",
-    a: "Yes. The Business plan includes unlimited team seats, SSO/SAML, dedicated infrastructure, a 99.9% SLA and a success manager. For custom MC allocation, custom contracts, volume discounts or API/integration needs, contact our enterprise team via the Enterprise page or support@megsyai.com.",
+    a: "Yes. Max includes team workspaces, and for custom MC allocation, SSO, dedicated infrastructure, custom contracts or volume discounts contact our enterprise team via the Enterprise page or support@megsyai.com.",
   },
 ];
-

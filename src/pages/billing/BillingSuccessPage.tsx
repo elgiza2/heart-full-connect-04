@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { m as motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import SecondMonthOfferCard from "@/components/billing/SecondMonthOfferCard";
 
 const mobileFont =
   "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif";
@@ -193,6 +194,8 @@ const BillingSuccessPage = () => {
             </div>
           </div>
         )}
+
+        {status === "success" && <SecondMonthOfferCard />}
 
         <div className="flex flex-col gap-2">
           {status === "success" && (

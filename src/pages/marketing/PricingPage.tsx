@@ -24,6 +24,7 @@ import PlanCard from "@/pages/billing/referrals/PlanCard";
 import {
   PLANS as RAW_PLANS,
   FAQS as RAW_FAQS,
+  getDisplayPrice,
   type PlanTier,
 } from "@/data/pricingData";
 import { brandText, getZoneBrand } from "@/lib/zoneBrand";
@@ -838,7 +839,7 @@ const PricingPage = () => {
                 className="text-[9px] px-2 py-0.5 rounded-full border border-foreground/25 text-foreground/85 font-normal"
                 style={{ letterSpacing: "0.15em" }}
               >
-                −20%
+                2 months free
               </span>
             </span>
           </div>
@@ -847,15 +848,14 @@ const PricingPage = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
           {PLANS.map((p, i) => {
-            const rawPrice = isYearly ? p.yearlyPrice : p.monthlyPrice;
-            // Pro monthly gets the $7 first-month offer. Every other card
-            // (including Pro yearly, Elite, Business) uses a 50% off framing.
-            const isProFirstMonth = p.tier === "pro" && !isYearly;
-            const price = isProFirstMonth
-              ? (p.firstMonthPrice ?? rawPrice)
-              : Math.round(rawPrice * 0.5);
-            const strikePrice = isProFirstMonth ? rawPrice : rawPrice;
-            const discountLabel = isProFirstMonth ? "75% Off" : "50% Off";
+            // Single source of truth: intro price monthly, 2-months-free yearly.
+            const {
+              price,
+              strike: strikePrice,
+              isIntro: isProFirstMonth,
+              discountLabel,
+            } = getDisplayPrice(p, isYearly);
+            const rawPrice = p.monthlyPrice;
             const credits = isYearly ? p.yearlyCredits : p.monthlyCredits;
             const isElite = p.tier === "elite";
             const isBusiness = p.tier === "business";
