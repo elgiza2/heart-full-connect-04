@@ -155,12 +155,19 @@ export const HomeIcon = ({ size = 20, className, strokeWidth = 1.6 }: Props) => 
     xmlns="http://www.w3.org/2000/svg"
     aria-hidden
   >
-    {/* Apple-style home — clean rounded silhouette, no extras */}
+    {/* Soft squircle home with doorway — cleaner, more modern silhouette */}
     <path
-      d="M4.5 10.5 12 4.5l7.5 6v8.2a1.8 1.8 0 0 1-1.8 1.8H6.3a1.8 1.8 0 0 1-1.8-1.8V10.5Z"
+      d="M3.8 10.9c0-.7.3-1.4.9-1.8l6-4.6a2.1 2.1 0 0 1 2.6 0l6 4.6c.6.4.9 1.1.9 1.8v6.4c0 1.3-1 2.3-2.3 2.3H6.1a2.3 2.3 0 0 1-2.3-2.3v-6.4Z"
       stroke="currentColor"
       strokeWidth={strokeWidth}
       strokeLinejoin="round"
+    />
+    <path
+      d="M9.7 19.6v-3.9a2.3 2.3 0 0 1 4.6 0v3.9"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinejoin="round"
+      strokeLinecap="round"
     />
   </svg>
 );
