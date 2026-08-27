@@ -512,18 +512,17 @@ function SkillRowCard({
 
   return (
     <motion.div
-      layout
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: enabled ? 1 : 0.7, y: 0 }}
-      exit={{ opacity: 0, y: -6 }}
-      transition={{ duration: 0.22, ease: [0.32, 0.72, 0, 1], delay: Math.min(index, 6) * 0.02 }}
-      className="group rounded-[18px] bg-[var(--mn-card)] px-3.5 py-3"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.18, ease: [0.32, 0.72, 0, 1], delay: Math.min(index, 6) * 0.02 }}
+      className="group border-b border-[color:var(--mn-sep)]/60 last:border-0"
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 px-3.5 py-3">
         <SkillAvatar name={skill.name} enabled={enabled} />
         <button onClick={onEdit} className="min-w-0 flex-1 text-left">
           <div className="flex items-center gap-1.5">
-            <p className="text-[14.5px] font-semibold text-[color:var(--mn-fg)] truncate">
+            <p className={cn("text-[14.5px] font-semibold truncate", enabled ? "text-[color:var(--mn-fg)]" : "text-[color:var(--mn-muted)]")}>
               {skill.name}
             </p>
             {skill.source === "system" && (
@@ -534,16 +533,18 @@ function SkillRowCard({
             {skill.description || (enabled ? "Active in chat" : "Paused")}
           </p>
         </button>
-        <div className="flex items-center gap-1.5 shrink-0">
+        <div className="flex items-center gap-1 shrink-0">
           <button
             onClick={onDelete}
             aria-label="Delete skill"
-            className="h-8 w-8 rounded-full grid place-items-center text-[color:var(--mn-muted)] opacity-0 group-hover:opacity-100 focus:opacity-100 hover:text-[color:var(--mn-danger)] hover:bg-[color:var(--mn-sep)] transition-all"
+            className="h-8 w-8 rounded-full grid place-items-center text-[color:var(--mn-muted)]/70 hover:text-[color:var(--mn-danger)] hover:bg-[color:var(--mn-sep)] transition-colors"
           >
             <Trash2 className="w-3.5 h-3.5" />
           </button>
           <Switch checked={enabled} onCheckedChange={onToggle} />
         </div>
+      </div>
+
       </div>
     </motion.div>
   );
