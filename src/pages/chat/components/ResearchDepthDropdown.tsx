@@ -4,7 +4,6 @@ import { Suspense, lazy, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
 import { promptUpgrade } from "@/lib/upgradeMoment";
-import { useNavigate } from "react-router-dom";
 import { glassModelMenu, glassModelMenuStyle } from "@/components/model-picker/glassModelMenuStyles";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useUserPlan } from "@/hooks/useUserPlan";
@@ -52,7 +51,6 @@ export default function ResearchDepthDropdown({
   const isMobile = useIsMobile();
   const { plan } = useUserPlan();
   const paid = isPaidUser(plan);
-  const navigate = useNavigate();
 
 
   useLayoutEffect(() => {
@@ -86,9 +84,8 @@ export default function ResearchDepthDropdown({
             type="button"
             onClick={() => {
               if (locked) {
-                promptUpgrade(d.label);
+                promptUpgrade(d.label, `${d.label} runs ${d.hint.toLowerCase()} — available on Pro.`);
                 setResearchDepthOpen(false);
-                navigate("/pricing");
                 return;
               }
               setResearchDepth(d.id);
