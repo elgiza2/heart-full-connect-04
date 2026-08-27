@@ -177,40 +177,56 @@ const PlusMain = (p: PlusContentProps) => {
     },
   ];
 
-  const SheetRow = ({ item }: { item: RowItem }) => (
-    <motion.button
+  const SheetRow = ({ item, expanded }: { item: RowItem; expanded?: boolean }) => (
+    <button
       data-no-neo
       type="button"
-      whileTap={{ scale: 0.99 }}
-      transition={iosSpring}
       onClick={item.onClick}
-      className="plus-row w-full flex items-center gap-3 px-2.5 py-2.5 rounded-[12px] text-start border-0 bg-transparent"
+      className="plus-row w-full flex items-center gap-3 px-2 py-2 rounded-[12px] text-left border-0 bg-transparent"
     >
-      <item.Icon
-        className="shrink-0 w-[18px] h-[18px] transition-colors duration-200"
-        strokeWidth={1.7}
-        style={{ color: item.active ? "hsl(var(--primary))" : "hsl(var(--foreground) / 0.8)" }}
-      />
-      <span className="flex-1 min-w-0 flex flex-col gap-0.5">
+      <span
+        className="shrink-0 grid place-items-center rounded-[10px] transition-colors duration-200"
+        style={{
+          width: 32,
+          height: 32,
+          background: item.active ? "hsl(var(--primary) / 0.12)" : "hsl(var(--foreground) / 0.05)",
+        }}
+      >
+        <item.Icon
+          className="w-[16px] h-[16px]"
+          strokeWidth={1.8}
+          style={{ color: item.active ? "hsl(var(--primary))" : "hsl(var(--foreground) / 0.75)" }}
+        />
+      </span>
+      <span className="flex-1 min-w-0 flex flex-col gap-[3px]">
         <span className="text-[14px] font-medium leading-none" style={{ color: "hsl(var(--foreground) / 0.94)" }}>
           {item.label}
         </span>
         {item.desc && (
-          <span className="text-[11.5px] leading-[1.35] truncate" style={{ color: "hsl(var(--foreground) / 0.45)" }}>
+          <span className="text-[11.5px] leading-none truncate" style={{ color: "hsl(var(--foreground) / 0.42)" }}>
             {item.desc}
           </span>
         )}
       </span>
       {item.value && (
-        <span className="shrink-0 text-[12px] font-medium" style={{ color: "hsl(var(--foreground) / 0.5)" }}>
+        <span
+          className="shrink-0 text-[11.5px] font-medium rounded-full px-2 py-[3px]"
+          style={{
+            color: item.active ? "hsl(var(--primary))" : "hsl(var(--foreground) / 0.5)",
+            background: item.active ? "hsl(var(--primary) / 0.1)" : "hsl(var(--foreground) / 0.05)",
+          }}
+        >
           {item.value}
         </span>
       )}
       <ChevronLeft
-        className="shrink-0 w-[15px] h-[15px] rtl:rotate-0 ltr:rotate-180"
-        style={{ color: "hsl(var(--foreground) / 0.32)" }}
+        className="shrink-0 w-[15px] h-[15px] transition-transform duration-200"
+        style={{
+          color: "hsl(var(--foreground) / 0.3)",
+          transform: expanded ? "rotate(-90deg)" : "rotate(180deg)",
+        }}
       />
-    </motion.button>
+    </button>
   );
 
   const SearchModeList = ({ compact }: { compact?: boolean }) => (
@@ -232,7 +248,7 @@ const PlusMain = (p: PlusContentProps) => {
               key={opt.id}
               type="button"
               onClick={() => setSearchMode(opt.id)}
-              className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-[10px] text-start hover:bg-foreground/[0.06] transition-colors"
+              className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-[10px] text-left hover:bg-foreground/[0.06] transition-colors"
             >
               <span className="flex-1 min-w-0 flex flex-col gap-0.5">
                 <span className="text-[13px] font-medium text-foreground leading-none">{opt.label}</span>
@@ -251,63 +267,48 @@ const PlusMain = (p: PlusContentProps) => {
   return (
     <motion.div key="main" {...fadeProps(-8)} className="flex flex-col">
       {/* MOBILE — bottom sheet */}
-      <motion.div
-        className="md:hidden flex flex-col pb-1.5"
-        style={{ fontFamily: mobileFont }}
-        dir="rtl"
-        initial="hidden"
-        animate="show"
-        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.022, delayChildren: 0.02 } } }}
-      >
+      <div className="md:hidden flex flex-col pb-1.5" style={{ fontFamily: mobileFont }}>
         <style>{`
-          .kimi-tile { transition: opacity 150ms ease; }
-          .kimi-tile:active { opacity: 0.65; }
-          .plus-row { transition: opacity 150ms ease; }
-          .plus-row:active { opacity: 0.65; }
+          .kimi-tile { transition: transform 160ms ease, opacity 160ms ease; }
+          .kimi-tile:active { transform: scale(0.97); opacity: 0.75; }
+          .plus-row { transition: background-color 160ms ease; }
+          .plus-row:active { background-color: hsl(var(--foreground) / 0.05); }
         `}</style>
 
         {/* Media tiles strip */}
-        <motion.div
-          className="flex gap-1.5 px-1.5 pb-1.5"
-          variants={{ hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0, transition: iosSpring } }}
-        >
+        <div className="grid grid-cols-3 gap-2 px-2 pb-2">
           {tiles.map((t) => (
-            <motion.button
+            <button
               key={t.id}
               data-no-neo
               type="button"
-              whileTap={{ scale: 0.96 }}
-              transition={iosSpring}
               onClick={t.onClick}
-              className="kimi-tile flex flex-1 flex-col items-center justify-center gap-1.5 rounded-[13px] border-0"
-              style={{ height: 66, background: "hsl(var(--foreground) / 0.05)" }}
+              className="kimi-tile flex flex-col items-center justify-center gap-1.5 rounded-[14px] border-0"
+              style={{ height: 68, background: "hsl(var(--foreground) / 0.045)" }}
             >
-              <t.Icon className="w-[18px] h-[18px]" strokeWidth={1.7} style={{ color: "hsl(var(--foreground) / 0.85)" }} />
-              <span className="text-[11px] font-medium leading-none" style={{ color: "hsl(var(--foreground) / 0.72)" }}>
+              <t.Icon className="w-[19px] h-[19px]" strokeWidth={1.7} style={{ color: "hsl(var(--foreground) / 0.8)" }} />
+              <span className="text-[11.5px] font-medium leading-none" style={{ color: "hsl(var(--foreground) / 0.7)" }}>
                 {t.label}
               </span>
-            </motion.button>
-          ))}
-        </motion.div>
-
-        {/* Rows */}
-        <div className="px-1.5 flex flex-col">
-          {rows.map((it) => (
-            <motion.div
-              key={it.id}
-              variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: iosSpring } }}
-            >
-              <SheetRow item={it} />
-              {it.id === "search" && (
-                <AnimatePresence initial={false}>{searchOpen && <SearchModeList compact />}</AnimatePresence>
-              )}
-            </motion.div>
+            </button>
           ))}
         </div>
 
+        <div className="mx-2 my-1 h-px" style={{ background: "hsl(var(--foreground) / 0.06)" }} />
 
+        {/* Rows */}
+        <div className="px-2 flex flex-col">
+          {rows.map((it) => (
+            <div key={it.id}>
+              <SheetRow item={it} expanded={it.id === "search" && searchOpen} />
+              {it.id === "search" && (
+                <AnimatePresence initial={false}>{searchOpen && <SearchModeList compact />}</AnimatePresence>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
 
-      </motion.div>
 
 
 
