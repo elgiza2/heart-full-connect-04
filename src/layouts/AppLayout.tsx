@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import SkipToContent from "@/components/common/SkipToContent";
+import UpgradeMomentHost from "@/components/billing/UpgradeMomentHost";
+
 
 
 // Aurora Spectrum — per-section accent (HSL triplets so we can compose with hsl() / alpha).
