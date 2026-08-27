@@ -63,7 +63,9 @@ export interface PlanCardConfig {
 
 const PRO_FEATURES = [
   "Unlimited chat with every flagship model",
-  "240 MC each month for images, video and premium runs",
+  "Unlimited image generation — no caps, no credits",
+  "Up to 40 premium videos a month (240 MC)",
+  "Free DeAPI video models — unlimited",
   "Deep Research with sourced, citation-backed reports",
   "Docs & Slides — generated, editable, export to PDF/PPTX",
   "Megsy Coder — build and deploy full apps in one click",
