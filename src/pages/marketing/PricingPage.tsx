@@ -1021,7 +1021,61 @@ const PricingPage = () => {
               </motion.div>
             );
           })}
+
+          {/* Price anchor — Max Yearly makes the monthly plans read as cheap. */}
+          {(() => {
+            const max = getPlan("elite");
+            if (!max) return null;
+            const reference = max.monthlyPrice * 12;
+            const perMonth = (max.yearlyPrice / 12).toFixed(0);
+            return (
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="relative flex flex-col rounded-3xl border border-foreground/15 bg-foreground/[0.03] p-7 backdrop-blur-md"
+              >
+                <span className="inline-flex w-fit items-center rounded-full border border-foreground/25 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-foreground/80">
+                  Best value
+                </span>
+                <h3 className="mt-4 font-display text-2xl font-bold text-foreground">
+                  Max · Yearly
+                </h3>
+                <p className="mt-1 text-sm text-foreground/60">
+                  The full Megsy stack, locked for 12 months.
+                </p>
+                <div className="mt-5 flex items-end gap-2">
+                  <span className="font-display text-5xl font-black text-foreground">
+                    ${max.yearlyPrice}
+                  </span>
+                  <span className="pb-2 text-sm text-foreground/55 line-through">${reference}</span>
+                </div>
+                <p className="mt-2 text-sm text-foreground/70">
+                  ≈ ${perMonth}/month · {YEARLY_FREE_MONTHS} months free · save $
+                  {reference - max.yearlyPrice}
+                </p>
+                <ul className="mt-5 space-y-2 text-[13.5px] text-foreground/80">
+                  {PLAN_HIGHLIGHTS.max.slice(0, 4).map((f) => (
+                    <li key={f} className="flex gap-2">
+                      <Check className="mt-[3px] h-3.5 w-3.5 shrink-0" strokeWidth={2} />
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  type="button"
+                  onClick={() => handleSubscribe("elite", { interval: "yearly" })}
+                  className="mt-auto w-full rounded-2xl border border-foreground/25 bg-foreground/10 px-5 py-3.5 pt-3.5 text-sm font-semibold text-foreground transition-colors hover:bg-foreground/20"
+                  style={{ marginTop: "1.5rem" }}
+                >
+                  Get Max Yearly
+                </button>
+              </motion.div>
+            );
+          })()}
         </div>
+
 
       </section>
 
