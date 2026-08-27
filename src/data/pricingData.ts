@@ -76,7 +76,7 @@ const PRO_FEATURES = [
 
 const MAX_FEATURES = [
   "Everything in Pro, with no daily limits anywhere",
-  "600 MC each month — 2.5× the Pro allowance",
+  "Unlimited images plus up to 120 premium videos a month (600 MC)",
   "Priority compute lane — up to 3× faster generations",
   "Unlimited parallel Megsy OS agents",
   "Longer context, larger uploads and bigger projects",
