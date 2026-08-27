@@ -60,45 +60,40 @@
 
 ### /pricing — Pricing Page
 - Contact shown: support@megsyai.com and +20 109 882 1812
-- Three paid plans (no free card shown on pricing page; "starter" is free tier)
-- Yearly billing toggle: saves ~2 months (up to 20% off by plan page)
+- Two paid plans: Pro and Max (no free card shown on pricing page)
+- Yearly billing toggle: 2 months free (yearly = 10 × monthly)
 - Payment processor: **Dodo Payments** (PCI-DSS Level 1 merchant of record)
 - Bank statement descriptor: "DODO * MEGSY AI"
 - Prices shown ex. tax; VAT/GST added at checkout
 
 #### Plan Details (monthly / yearly)
-| Plan | Monthly | Yearly | MC/month | Badge |
-|---|---|---|---|---|
-| **Pro** | $25 | $250/yr | 240 MC | — |
-| **Elite** | $59 | $590/yr | 500 MC | MOST POPULAR |
-| **Business** | $149 | $1,490/yr | 1,200 MC | BEST VALUE |
-- Yearly bonus MC: Pro +480, Elite +1,000, Business +2,400
+| Plan | First month | Monthly | Yearly | MC/month | Badge |
+|---|---|---|---|---|---|
+| **Pro** | $7 | $20 | $200/yr | 240 MC | — |
+| **Max** | $17 | $40 | $400/yr | 600 MC | MOST POPULAR |
+- Yearly bonus MC: Pro +480, Max +1,200
+- Second-month offer: after the first payment clears, the user is offered month two at the same intro price ($7 Pro / $17 Max) with a "Pay now" button, claimable for 48 hours
 
-#### Pro ($25/mo) includes:
-- Unlimited Chat through Megsy AI chat models
-- Image generation with the current active image models
-- Video generation with the current active video models
-- Code Builder, Slides, Docs & Deep Research included
-- Unlimited Slides, Docs & Deep Research
-- Unlimited Megsy OS autonomous agents (runs 24/7)
-- Team workspace included
-- Priority email support
-- 240 MC/month
+#### Pro ($7 first month, then $20/mo) includes:
+- Unlimited chat with every flagship model
+- 240 MC each month for images, video and premium runs
+- Deep Research with sourced, citation-backed reports
+- Docs & Slides — generated, editable, export to PDF/PPTX
+- Megsy Coder — build and deploy full apps in one click
+- Megsy OS agents running tasks in the background
+- Team workspace with shared projects and files
+- Priority support, cancel anytime
 
-#### Elite ($59/mo) includes everything in Pro plus:
-- Priority queue — 3× faster generations
-- Advanced presets & custom branding
-- Analytics dashboard
-- 24/7 priority chat support
-- 500 MC/month
+#### Max ($17 first month, then $40/mo) includes everything in Pro plus:
+- 600 MC each month (2.5× the Pro allowance)
+- Priority compute lane — up to 3× faster generations
+- Unlimited parallel Megsy OS agents
+- Longer context, larger uploads and bigger projects
+- Advanced branding, presets and usage analytics
+- Early access to new models and features
+- 24/7 priority support
 
-#### Business ($149/mo) includes everything in Elite plus:
-- Unlimited team seats
-- SSO & SAML authentication
-- Dedicated infrastructure
-- 99.9% SLA guarantee
-- White-glove onboarding & success manager
-- 1,200 MC/month
+
 
 #### Enterprise (custom)
 - Custom MC Allocation, Priority compute lane, Dedicated Infrastructure, SLA Guarantees

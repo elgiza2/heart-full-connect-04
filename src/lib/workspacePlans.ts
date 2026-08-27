@@ -1,4 +1,4 @@
-import { PLAN_MONTHLY_CREDITS } from "@/data/pricingData";
+import { PLANS } from "@/data/pricingData";
 
 export type WorkspacePaidPlan = "starter" | "pro" | "elite" | "business";
 
@@ -32,6 +32,8 @@ export const WORKSPACE_PRODUCT_MAP: Record<WorkspacePaidPlan, { monthly: string;
     },
   };
 
+// Two paid plans only (Pro + Max). Prices and perks come from pricingData so
+// the workspace picker can never drift from the /pricing page.
 export const WORKSPACE_PLANS: WorkspacePlanOption[] = [
   {
     id: "free",
@@ -39,68 +41,20 @@ export const WORKSPACE_PLANS: WorkspacePlanOption[] = [
     monthlyPrice: 0,
     tagline: "Basic shared space to get started",
     creditsLabel: "No subscription",
-    perks: ["3 members", "Basic tasks", "Personal use or small team"],
+    perks: ["3 members", "Megsy Lite chat", "Personal use or small team"],
   },
-  {
-    id: "starter",
-    name: "Starter",
-    monthlyPrice: 9,
-    yearlyPrice: 89,
-    tagline: "Matches the Starter pay plan",
-    creditsLabel: `${PLAN_MONTHLY_CREDITS.starter} MC / month`,
-    perks: [
-      "Unlimited chat",
-      "Megsy Pro & Max",
-      "Credit-based image, code & research",
-      "24/7 support",
-    ],
-  },
-  {
-    id: "pro",
-    name: "Pro",
-    monthlyPrice: 25,
-    yearlyPrice: 250,
-    tagline: "Matches the Pro pay plan",
-    creditsLabel: `${PLAN_MONTHLY_CREDITS.pro} MC / month`,
-    perks: [
-      "Unlimited chat (Megsy Lite, Pro & Max)",
-      "Image, video, slides, docs & deep research — credit-based",
-      "Megsy Code Builder access",
-      "Team workspace included",
-      "24/7 support",
-    ],
-  },
-  {
-    id: "elite",
-    name: "Elite",
-    monthlyPrice: 59,
-    yearlyPrice: 599,
-    tagline: "Matches the Elite pay plan",
-    creditsLabel: `${PLAN_MONTHLY_CREDITS.elite} MC / month`,
-    perks: [
-      "Everything in Pro",
-      "Higher monthly credit allowance",
-      "Priority generation queue",
-      "Analytics dashboard",
-      "24/7 priority support",
-    ],
-  },
-  {
-    id: "business",
-    name: "Business",
-    monthlyPrice: 149,
-    yearlyPrice: 1599,
-    tagline: "Matches the Business pay plan",
-    creditsLabel: `${PLAN_MONTHLY_CREDITS.business.toLocaleString("en-US")} MC / month`,
-    perks: [
-      "Everything in Elite",
-      "Largest monthly credit allowance",
-      "Unlimited team seats",
-      "Dedicated infrastructure",
-      "SSO & SLA",
-      "24/7 priority support",
-    ],
-  },
+  ...PLANS.map<WorkspacePlanOption>((plan) => ({
+    id: plan.tier as WorkspacePaidPlan,
+    name: plan.name,
+    monthlyPrice: plan.monthlyPrice,
+    yearlyPrice: plan.yearlyPrice,
+    tagline:
+      plan.firstMonthPrice != null
+        ? `First month $${plan.firstMonthPrice}, then $${plan.monthlyPrice}/month`
+        : `$${plan.monthlyPrice}/month`,
+    creditsLabel: plan.monthlyCredits,
+    perks: plan.features.slice(0, 5),
+  })),
 ];
 
 export function isWorkspacePaidPlan(plan: string | null | undefined): plan is WorkspacePaidPlan {

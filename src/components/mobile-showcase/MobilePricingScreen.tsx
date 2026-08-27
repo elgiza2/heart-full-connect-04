@@ -6,7 +6,12 @@ import { useEffect, useMemo, useState } from "react";
 import { Check } from "lucide-react";
 import { MobileSidebarButton } from "@/components/shared/MobileSidebarButton";
 import { useUserLang } from "@/lib/authI18n";
-import { type PlanTier } from "@/data/pricingData";
+import {
+  PLAN_HIGHLIGHTS,
+  getDisplayPrice,
+  getPlan,
+  type PlanTier,
+} from "@/data/pricingData";
 import PlanCard from "@/pages/billing/referrals/PlanCard";
 
 function useIsLightTheme() {
@@ -53,24 +58,20 @@ export default function MobilePricingScreen({
     [isAr],
   );
 
-  const features = useMemo(() => {
-    if (isAr) {
-      return plan === "pro"
-        ? ["Unlimited chat with the strongest models", "Deep research, documents and slides", "Megsy Coder with instant deploy", "240 professional images and videos per month", "Priority response"]
-        : ["Everything in Pro, unlimited", "Unlimited professional images", "500 cinematic videos per month", "3x speed and top priority", "Advanced integrations and skills"];
-    }
-    return plan === "pro"
-      ? ["Unlimited chat with flagship models", "Deep Research, Docs & Slides", "Megsy Coder with instant hosting", "240 pro images & videos monthly", "Priority responses"]
-      : ["Everything in Pro, unlimited", "Unlimited pro image generation", "500 cinematic videos monthly", "3× faster, highest priority", "Advanced skills & integrations"];
-  }, [isAr, plan]);
-
-  type PriceBlock = { price: string; strike: string };
-  const priceMap: Record<"pro" | "max", { monthly: PriceBlock; yearly: PriceBlock }> = {
-    pro: { monthly: { price: "5", strike: "20" }, yearly: { price: "149", strike: "298" } },
-    max: { monthly: { price: "39", strike: "78" }, yearly: { price: "299", strike: "598" } },
-  };
-  const prices = priceMap[plan];
   const activeTier: PlanTier = plan === "pro" ? "pro" : "elite";
+
+  // Same source of truth as the desktop /pricing page.
+  const features = useMemo(() => PLAN_HIGHLIGHTS[plan], [plan]);
+
+  const prices = useMemo(() => {
+    const config = getPlan(activeTier)!;
+    const monthly = getDisplayPrice(config, false);
+    const yearly = getDisplayPrice(config, true);
+    return {
+      monthly: { price: String(monthly.price), strike: String(monthly.strike) },
+      yearly: { price: String(yearly.price), strike: String(yearly.strike) },
+    };
+  }, [activeTier]);
   const isLoading = loadingTier === activeTier;
 
   const c = isLight
