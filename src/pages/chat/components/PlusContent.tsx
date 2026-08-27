@@ -29,10 +29,17 @@ import {
   Smartphone,
   ScanSearch,
   Bot,
-  
+  Aperture,
+  Images,
+  Paperclip,
+  Blocks,
+  Radar,
 
 } from "lucide-react";
+
 import { toast } from "sonner";
+import { useWebSearchMode, WEB_SEARCH_MODES } from "@/lib/webSearchMode";
+
 import { promptUpgrade } from "@/lib/upgradeMoment";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -370,34 +377,26 @@ const PlusMain = (p: PlusContentProps) => {
           <>
             <DesktopGroup>
               <button
-                onClick={p.handleSearchToggle}
+                onClick={() => setSearchOpen((v) => !v)}
+                aria-expanded={searchOpen}
                 className="w-full flex items-center gap-3 px-2.5 h-9 rounded-[10px] text-left hover:bg-foreground/[0.06] transition-colors"
               >
-                <Globe className="w-[18px] h-[18px] shrink-0 text-foreground/70" strokeWidth={1.8} />
+                <Radar
+                  className="w-[18px] h-[18px] shrink-0"
+                  strokeWidth={1.8}
+                  style={{ color: searchMode === "off" ? "hsl(var(--foreground) / 0.7)" : "hsl(var(--primary))" }}
+                />
                 <span className="flex-1 text-[13.5px] font-medium text-foreground">Web search</span>
-                <span
-                  className="relative shrink-0 rounded-full transition-colors"
-                  style={{
-                    width: 32,
-                    height: 18,
-                    backgroundColor: p.searchEnabled
-                      ? "hsl(var(--primary))"
-                      : "hsl(var(--foreground) / 0.18)",
-                  }}
-                >
-                  <span
-                    className="absolute top-1/2 rounded-full bg-white"
-                    style={{
-                      width: 14,
-                      height: 14,
-                      marginTop: -7,
-                      left: p.searchEnabled ? 16 : 2,
-                      boxShadow: "0px 2px 4px rgba(0,0,0,0.15)",
-                    }}
-                  />
-                </span>
+                <span className="text-[12px] font-medium text-muted-foreground">{searchLabel}</span>
+                <ChevronLeft
+                  className={`w-[15px] h-[15px] text-foreground/40 transition-transform duration-200 ${
+                    searchOpen ? "-rotate-90" : "rotate-180"
+                  }`}
+                />
               </button>
-              <DesktopRow Icon={Puzzle} label="Skills" color="currentColor" onClick={() => p.setPlusView("skills")} chevron />
+              <AnimatePresence initial={false}>{searchOpen && <SearchModeList />}</AnimatePresence>
+              <DesktopRow Icon={Blocks} label="Skills" color="currentColor" onClick={() => p.setPlusView("skills")} chevron />
+
               <DesktopRow Icon={Wrench} label="Integrations" color="currentColor" onClick={() => p.setPlusView("tools")} chevron />
               <DesktopRow
                 Icon={Plug}
