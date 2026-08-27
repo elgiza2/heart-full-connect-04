@@ -24,9 +24,13 @@ import PlanCard from "@/pages/billing/referrals/PlanCard";
 import {
   PLANS as RAW_PLANS,
   FAQS as RAW_FAQS,
+  PLAN_HIGHLIGHTS,
+  YEARLY_FREE_MONTHS,
   getDisplayPrice,
+  getPlan,
   type PlanTier,
 } from "@/data/pricingData";
+
 import { brandText, getZoneBrand } from "@/lib/zoneBrand";
 import { isEgMode } from "@/lib/egMode";
 import { isArabBilling } from "@/lib/payRegion";
