@@ -6,6 +6,10 @@ import {
   ScanSearch,
   FileText,
 } from "lucide-react";
+import { m as motion, AnimatePresence } from "framer-motion";
+
+/** Shared spring — one motion language for every chip interaction. */
+const CHIP_SPRING = { type: "spring" as const, stiffness: 420, damping: 30, mass: 0.6 };
 
 export interface StarterCardsProps {
   /** Activates the service chip for the picked card. */
