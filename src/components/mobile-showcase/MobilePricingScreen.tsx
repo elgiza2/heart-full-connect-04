@@ -107,7 +107,7 @@ export default function MobilePricingScreen({
   return (
     <div
       dir={"ltr"}
-      className="pricing-sunset-bg relative flex h-[100dvh] w-full flex-col overflow-hidden"
+      className="pricing-sunset-bg relative flex h-[100dvh] w-full flex-col overflow-y-auto"
       style={{
         color: c.text,
         fontFamily: 'Inter, -apple-system, "SF Pro Text", system-ui, sans-serif',
@@ -128,7 +128,7 @@ export default function MobilePricingScreen({
         />
       </header>
 
-      <div className="flex flex-1 flex-col justify-center gap-6 px-5 pb-2 pt-2">
+      <div className="flex flex-1 flex-col justify-start gap-5 px-5 pb-2 pt-3">
         {/* Plan card fan */}
         <div className="mps-rise mx-auto flex h-[124px] w-full max-w-[360px] items-center justify-center" style={{ animationDelay: "20ms" }}>
           <PlanCard
@@ -177,19 +177,31 @@ export default function MobilePricingScreen({
           </div>
         </div>
 
-        {/* Benefits */}
-        <ul key={plan} className="flex flex-col gap-3.5">
-          {features.map((f, i) => (
-            <li
-              key={f}
-              className="mps-rise flex items-start gap-3 text-[14.5px] leading-snug"
-              style={{ animationDelay: `${100 + i * 55}ms` }}
-            >
-              <Check className="mt-[2px] h-[15px] w-[15px] shrink-0" strokeWidth={2} style={{ color: c.text }} />
-              <span style={{ color: c.text }}>{f}</span>
-            </li>
-          ))}
-        </ul>
+        {/* Benefits — show ~3 lines, scroll the rest */}
+        <div className="relative shrink-0">
+          <ul
+            key={plan}
+            className="custom-pricing-scrollbar flex flex-col gap-3.5 overflow-y-auto pr-1"
+            style={{ maxHeight: "168px" }}
+          >
+            {features.map((f, i) => (
+              <li
+                key={f}
+                className="mps-rise flex items-start gap-3 text-[14.5px] leading-snug"
+                style={{ animationDelay: `${100 + i * 55}ms` }}
+              >
+                <Check className="mt-[2px] h-[15px] w-[15px] shrink-0" strokeWidth={2} style={{ color: c.text }} />
+                <span style={{ color: c.text }}>{f}</span>
+              </li>
+            ))}
+          </ul>
+          {features.length > 3 && (
+            <div
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-8"
+              style={{ background: `linear-gradient(to top, ${c.bg}, transparent)` }}
+            />
+          )}
+        </div>
       </div>
 
       {/* Billing rows */}
