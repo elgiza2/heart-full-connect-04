@@ -156,3 +156,8 @@
   box-shadow: none;
   padding: 0;
 }
+
+.ob-root .ob-check {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}

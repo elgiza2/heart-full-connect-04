@@ -169,8 +169,8 @@ function PricingPanel() {
         <ul className="mt-5 flex list-none flex-col gap-3 p-0">
           {rows.map((r) => (
             <li key={r.title} className="flex items-start gap-3">
-              <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-white/15">
-                <Check size={12} className="ob-ink" />
+              <span className="ob-check mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full">
+                <Check size={12} />
               </span>
               <span className="min-w-0">
                 <span className="ob-ink block text-[14.5px] font-medium">{r.title}</span>
