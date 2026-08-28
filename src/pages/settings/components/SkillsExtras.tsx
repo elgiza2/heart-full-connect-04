@@ -87,7 +87,7 @@ export function SkillsAddMenu({
         <Drawer.Trigger asChild>
           <button
             aria-label="Add skill"
-            className="inline-flex items-center gap-1.5 h-9 px-4 rounded-full text-[13px] font-semibold transition-colors"
+            className="inline-flex shrink-0 whitespace-nowrap items-center gap-1.5 h-9 px-4 rounded-full text-[13px] font-semibold transition-colors active:scale-[0.97]"
             style={{
               background: "hsl(var(--foreground))",
               color: "hsl(var(--background))",
