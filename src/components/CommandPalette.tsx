@@ -10,7 +10,6 @@ import {
   Shield,
   KeyRound,
   Plug,
-  BookOpen,
   Star,
   Compass,
   FileText,
