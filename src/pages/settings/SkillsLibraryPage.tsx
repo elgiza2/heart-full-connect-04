@@ -1,6 +1,7 @@
 /** @doc Official skills library — browse and add curated skills. */
 import { useState } from "react";
 import { Search, Check, Plus, Loader2, ShieldCheck } from "lucide-react";
+import { resolveSkillIcon, skillEmoji } from "@/lib/skillIcon";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useSkills, type Skill } from "@/hooks/useSkills";
@@ -90,9 +91,7 @@ export default function SkillsLibraryPage() {
                 key={s.id}
                 className="flex items-center gap-3 px-4 py-3.5 rounded-[14px] bg-[var(--mn-card)]"
               >
-                <div className="shrink-0 w-10 h-10 rounded-full bg-primary/15 text-primary grid place-items-center">
-                  <ShieldCheck className="w-[18px] h-[18px]" />
-                </div>
+                <LibraryIcon name={s.name} icon={s.icon} />
                 <div className="min-w-0 flex-1">
                   <p className="text-[14.5px] font-semibold text-[color:var(--mn-fg)] truncate">
                     {s.name}
@@ -129,5 +128,15 @@ export default function SkillsLibraryPage() {
         </div>
       )}
     </SubShell>
+  );
+}
+
+function LibraryIcon({ name, icon }: { name: string; icon?: string | null }) {
+  const emoji = skillEmoji(icon);
+  const Icon = resolveSkillIcon(name, icon);
+  return (
+    <div className="shrink-0 w-10 h-10 rounded-[14px] bg-primary/12 text-primary grid place-items-center text-[17px]">
+      {emoji ? <span>{emoji}</span> : <Icon className="w-[19px] h-[19px]" strokeWidth={1.9} />}
+    </div>
   );
 }
