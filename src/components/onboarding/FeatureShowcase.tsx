@@ -28,6 +28,11 @@ const CSS = `
 @keyframes fsFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 @keyframes fsGlow { 0%, 100% { opacity: 0.35; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.05); } }
 @keyframes fsShimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+@keyframes fsProgress { 0% { width: 8%; } 55% { width: 68%; } 80% { width: 82%; } 100% { width: 8%; } }
+@keyframes fsPulse { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(110,231,160,0.5); } 50% { opacity: 0.75; box-shadow: 0 0 0 6px rgba(110,231,160,0); } }
+.fs-progress-bar { animation: fsProgress 7s ease-in-out infinite; }
+.fs-live-dot { animation: fsPulse 1.8s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .fs-progress-bar, .fs-live-dot { animation: none; } .fs-progress-bar { width: 68%; } }
 .fs-up { opacity: 0; animation: fsFadeUp .42s cubic-bezier(0.22,1,0.36,1) forwards; }
 /* Only one continuous ambient loop is allowed on screen at a time (the marquee).
    Float / glow / shimmer are kept as static styles so the eye has one focal motion. */
