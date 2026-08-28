@@ -94,6 +94,38 @@ async function generateImageScene(
   }
 }
 
+/**
+ * Reserves one video from the caller's monthly allowance. Enforced in the
+ * database (`consume_video_quota`), so the UI cannot bypass it.
+ */
+async function reserveVideoQuota(
+  modelSlug: string,
+): Promise<{ allowed: boolean; message: string }> {
+  try {
+    const unlimited = isUnlimitedMediaModel({ slug: modelSlug });
+    const { data, error } = await supabase.rpc("consume_video_quota", {
+      _model: modelSlug,
+      _unlimited: unlimited,
+    });
+    if (error) {
+      // Never hard-block on transient RPC failures for unlimited models.
+      if (unlimited) return { allowed: true, message: "" };
+      return { allowed: false, message: error.message || "Video quota check failed" };
+    }
+    const res = (data || {}) as { allowed?: boolean; error?: string; limit?: number };
+    if (res.allowed) return { allowed: true, message: "" };
+    if (res.error === "video_quota_exceeded") {
+      return {
+        allowed: false,
+        message: `You've used all ${res.limit ?? 0} videos in your monthly plan. Upgrade to keep generating.`,
+      };
+    }
+    return { allowed: false, message: res.error || "Video generation is not available on your plan." };
+  } catch {
+    return { allowed: false, message: "Video quota check failed" };
+  }
+}
+
 async function generateVideoScene(
   scene: MediaPlanScene,
   modelSlug: string,
