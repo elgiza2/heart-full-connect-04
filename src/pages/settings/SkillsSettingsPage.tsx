@@ -33,6 +33,8 @@ import { useConfirm } from "@/components/common/ConfirmDialog";
 
 import { cn } from "@/lib/utils";
 import { SkillsAddMenu } from "./components/SkillsExtras";
+import { resolveSkillIcon, skillEmoji } from "@/lib/skillIcon";
+
 
 import { sanitizeErrorMessage } from "@/lib/sanitizeError";
 type DraftSkill = Partial<Skill> & {
@@ -521,11 +523,22 @@ function skillHue(name: string) {
   return SKILL_HUES[h % SKILL_HUES.length];
 }
 
-function SkillAvatar({ name, enabled, hue }: { name: string; enabled: boolean; hue: number }) {
-  const initial = (name.trim()[0] || "?").toUpperCase();
+function SkillAvatar({
+  name,
+  icon,
+  enabled,
+  hue,
+}: {
+  name: string;
+  icon?: string | null;
+  enabled: boolean;
+  hue: number;
+}) {
+  const emoji = skillEmoji(icon);
+  const Icon = resolveSkillIcon(name, icon);
   return (
     <div
-      className="shrink-0 w-11 h-11 rounded-[15px] grid place-items-center text-[16px] font-bold transition-all"
+      className="shrink-0 w-11 h-11 rounded-[15px] grid place-items-center text-[18px] transition-all"
       style={
         enabled
           ? {
@@ -539,10 +552,11 @@ function SkillAvatar({ name, enabled, hue }: { name: string; enabled: boolean; h
             }
       }
     >
-      {initial}
+      {emoji ? <span>{emoji}</span> : <Icon className="w-[21px] h-[21px]" strokeWidth={1.9} />}
     </div>
   );
 }
+
 
 function SkillRowCard({
   skill,
@@ -569,7 +583,7 @@ function SkillRowCard({
       className="group relative flex flex-col rounded-[18px] bg-[var(--mn-card)] p-3.5 active:scale-[0.985] transition-transform"
     >
       <button onClick={onEdit} className="text-left">
-        <SkillAvatar name={skill.name} enabled={enabled} hue={hue} />
+        <SkillAvatar name={skill.name} icon={skill.icon} enabled={enabled} hue={hue} />
         <div className="mt-2.5 flex items-center gap-1">
           <p
             className={cn(
