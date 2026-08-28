@@ -113,6 +113,11 @@ async function generateVideoScene(
   // Videos are treated as async tasks: no fake percent bar while the provider
   // is rendering. We surface a 5-minute countdown instead (see onCountdown).
   onPartial?.(scene.index, "", NaN);
+
+  // Server-side monthly video allowance (DeAPI models stay unlimited).
+  const quota = await reserveVideoQuota(modelSlug);
+  if (!quota.allowed) throw new Error(quota.message);
+
   try {
     const { data, error } = await supabase.functions.invoke("media-video", { body });
     if (error) throw new Error(error.message || "video gen failed");
