@@ -5,6 +5,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { MediaPlan, MediaPlanScene } from "@/components/chat/media/MediaPlanCard";
 import type { MediaSceneResult } from "@/components/chat/media/MediaResultCard";
+import { isUnlimitedMediaModel } from "@/lib/mediaQuota";
 
 // The image router is deployed as `anything-api` (new function dirs can't be
 // created here; the legacy `media-image` deployment ignores model_slug).
