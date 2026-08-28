@@ -144,7 +144,7 @@ export async function safeFetch(
       ...init,
       headers,
       redirect: "manual",
-　  });
+      });
 
     if (response.status >= 300 && response.status < 400) {
       const location = response.headers.get("location");
