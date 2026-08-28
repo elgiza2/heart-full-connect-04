@@ -4,7 +4,7 @@
  * Horizontal scroll-snap pager with dots. Pure presentation.
  */
 import { useEffect, useRef, useState } from "react";
-import { Timer, ChevronRight, ChevronLeft } from "lucide-react";
+import { Timer, ChevronRight, ChevronLeft, Computer, FolderKanban, Hourglass } from "lucide-react";
 import { BrandIcon, hasBrandIcon } from "@/components/chat/media/BrandIcon";
 import { RatingBadge } from "@/components/foundations/rating-badge";
 import ServicesStage from "./ServicesStage";
