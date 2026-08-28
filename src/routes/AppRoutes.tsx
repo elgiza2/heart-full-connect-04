@@ -62,6 +62,9 @@ import {
   PricingPage,
   LegalPage,
   NotFoundPage,
+  DocsPage,
+  BlogIndexPage,
+  BlogPostPage,
 } from "./lazyPages";
 
 const toChat = <RetiredRedirect to="/chat" />;
