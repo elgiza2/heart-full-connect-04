@@ -72,6 +72,9 @@ export const SkillsLibraryPage = lazy(() => import("@/pages/settings/SkillsLibra
 export const PricingPage = lazy(() => import("@/pages/marketing/PricingPage"));
 export const LegalPage = lazy(() => import("@/pages/legal/LegalPage"));
 export const NotFoundPage = lazy(() => import("@/pages/NotFoundPage"));
+export const DocsPage = lazy(() => import("@/pages/docs/DocsPage"));
+export const BlogIndexPage = lazy(() => import("@/pages/blog/BlogIndexPage"));
+export const BlogPostPage = lazy(() => import("@/pages/blog/BlogPostPage"));
 
 /* ── Standalone utilities ─────────────────────────────────────── */
 export const SlidesPreviewPage = lazy(() => import("@/pages/SlidesPreviewPage"));

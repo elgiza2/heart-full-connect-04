@@ -62,6 +62,9 @@ import {
   PricingPage,
   LegalPage,
   NotFoundPage,
+  DocsPage,
+  BlogIndexPage,
+  BlogPostPage,
 } from "./lazyPages";
 
 const toChat = <RetiredRedirect to="/chat" />;
@@ -193,10 +196,10 @@ export const AppRoutes = ({ currentUserId }: { currentUserId: string | null }) =
     <Route path="/features-guide" element={toChat} />
     <Route path="/megsy-model" element={toChat} />
     <Route path="/megay" element={toChat} />
-    <Route path="/docs" element={toChat} />
-    <Route path="/docs/*" element={toChat} />
-    <Route path="/blog" element={toChat} />
-    <Route path="/blog/*" element={toChat} />
+    <Route path="/docs" element={<DocsPage />} />
+    <Route path="/docs/*" element={<DocsPage />} />
+    <Route path="/blog" element={<BlogIndexPage />} />
+    <Route path="/blog/:slug" element={<BlogPostPage />} />
     <Route path="/vs/:slug" element={toChat} />
     <Route path="/about" element={<LegalPage slug="about" />} />
     <Route path="/contact" element={<LegalPage slug="contact" />} />
