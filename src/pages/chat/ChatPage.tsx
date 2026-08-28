@@ -3043,6 +3043,17 @@ const ChatPage = () => {
             transformOrigin: isRtlUi ? "right center" : "left center",
             touchAction: "pan-y",
           }}
+          onPointerDown={(event) => {
+            if (event.pointerType === "mouse") return;
+            if (blocksSidebarSwipe(event.target, event.clientX, isRtlUi)) return;
+            beginSidebarEdgeDrag(event.pointerId, event.clientX, event.clientY);
+          }}
+          onPointerMove={(event) => {
+            if (event.pointerType === "mouse") return;
+            updateSidebarEdgeDrag(event.pointerId, event.clientX, event.clientY);
+          }}
+          onPointerUp={(event) => endSidebarEdgeDrag(event.pointerId)}
+          onPointerCancel={(event) => endSidebarEdgeDrag(event.pointerId)}
           drag={isMobileViewport && sidebarOpen ? "x" : false}
           dragDirectionLock
           dragConstraints={
