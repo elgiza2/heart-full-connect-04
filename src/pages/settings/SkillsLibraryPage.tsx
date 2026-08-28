@@ -135,7 +135,7 @@ function LibraryIcon({ name, icon }: { name: string; icon?: string | null }) {
   const emoji = skillEmoji(icon);
   const Icon = resolveSkillIcon(name, icon);
   return (
-    <div className="shrink-0 w-10 h-10 rounded-[14px] bg-primary/12 text-primary grid place-items-center text-[17px]">
+    <div className="shrink-0 w-10 h-10 rounded-[14px] bg-primary/15 text-primary grid place-items-center text-[17px]">
       {emoji ? <span>{emoji}</span> : <Icon className="w-[19px] h-[19px]" strokeWidth={1.9} />}
     </div>
   );
