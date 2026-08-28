@@ -85,8 +85,8 @@ function ChipRow({ chips, duration, reverse }: { chips: ModelChip[]; duration: n
         {doubled.map((m, i) => (
           <span key={`${m.name}-${i}`} className="ob-chip ob-glass">
             <span className="ob-chip-icon">
-              {hasBrandIcon(m.provider) ? (
-                <BrandIcon slug={m.provider} size={16} />
+              {hasBrandIcon(m.name, m.provider) ? (
+                <BrandIcon name={m.name} provider={m.provider} size={16} />
               ) : (
                 m.name.charAt(0)
               )}
