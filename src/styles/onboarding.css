@@ -134,3 +134,23 @@
     transition: none;
   }
 }
+
+/* Global app styles theme headings and tab-like groups for the light UI;
+   the onboarding canvas is always dark, so re-assert its own colors. */
+.ob-root h1,
+.ob-root h2,
+.ob-root p,
+.ob-root span,
+.ob-root li,
+.ob-root button {
+  color: inherit;
+}
+.ob-root h1 {
+  color: #fff;
+}
+.ob-root [aria-label="Onboarding steps"] {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}

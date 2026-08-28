@@ -336,12 +336,11 @@ const OnboardingPage = () => {
 
         <div className="absolute inset-x-0 bottom-0 z-10 px-6 pb-[max(1.75rem,env(safe-area-inset-bottom))]">
           <div className="mx-auto flex max-w-md flex-col items-center gap-4">
-            <div className="flex items-center gap-1.5" role="tablist" aria-label="Onboarding steps">
+            <div className="flex items-center gap-1.5" aria-label="Onboarding steps">
               {PANELS.map((_, i) => (
                 <button
                   key={i}
                   type="button"
-                  role="tab"
                   aria-selected={i === index}
                   aria-label={`Step ${i + 1}`}
                   onClick={() => goTo(i)}
