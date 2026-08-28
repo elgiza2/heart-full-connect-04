@@ -581,7 +581,7 @@ function SkillRowCard({
       className="group relative flex flex-col rounded-[18px] bg-[var(--mn-card)] p-3.5 active:scale-[0.985] transition-transform"
     >
       <button onClick={onEdit} className="text-left">
-        <SkillAvatar name={skill.name} enabled={enabled} hue={hue} />
+        <SkillAvatar name={skill.name} icon={skill.icon} enabled={enabled} hue={hue} />
         <div className="mt-2.5 flex items-center gap-1">
           <p
             className={cn(
