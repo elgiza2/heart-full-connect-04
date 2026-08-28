@@ -513,16 +513,31 @@ export default function SkillsSettingsPage() {
 
 
 
-function SkillAvatar({ name, enabled }: { name: string; enabled: boolean }) {
+const SKILL_HUES = [212, 268, 152, 24, 340, 190, 45, 120];
+
+function skillHue(name: string) {
+  let h = 0;
+  for (let i = 0; i < name.length; i += 1) h = (h * 31 + name.charCodeAt(i)) % 9973;
+  return SKILL_HUES[h % SKILL_HUES.length];
+}
+
+function SkillAvatar({ name, enabled, hue }: { name: string; enabled: boolean; hue: number }) {
   const initial = (name.trim()[0] || "?").toUpperCase();
   return (
     <div
-      className={cn(
-        "shrink-0 w-10 h-10 rounded-[13px] grid place-items-center text-[15px] font-bold transition-colors",
+      className="shrink-0 w-11 h-11 rounded-[15px] grid place-items-center text-[16px] font-bold transition-all"
+      style={
         enabled
-          ? "bg-primary/10 text-primary"
-          : "bg-[color:var(--mn-sep)] text-[color:var(--mn-muted)]",
-      )}
+          ? {
+              background: `linear-gradient(140deg, hsl(${hue} 82% 58%), hsl(${hue + 22} 78% 48%))`,
+              color: "white",
+              boxShadow: `0 6px 16px -8px hsl(${hue} 80% 45% / 0.75)`,
+            }
+          : {
+              background: "var(--mn-sep)",
+              color: "var(--mn-muted)",
+            }
+      }
     >
       {initial}
     </div>
@@ -543,44 +558,50 @@ function SkillRowCard({
   onToggle: (v: boolean) => void;
 }) {
   const enabled = skill.is_enabled !== false;
+  const hue = skillHue(skill.name || "?");
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.18, ease: [0.32, 0.72, 0, 1], delay: Math.min(index, 6) * 0.02 }}
-      className="group border-b border-[color:var(--mn-sep)]/60 last:border-0"
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -4 }}
+      transition={{ duration: 0.2, ease: [0.32, 0.72, 0, 1], delay: Math.min(index, 8) * 0.025 }}
+      className="group relative flex flex-col rounded-[18px] bg-[var(--mn-card)] p-3.5 active:scale-[0.985] transition-transform"
     >
-      <div className="flex items-center gap-3 px-3.5 py-3">
-        <SkillAvatar name={skill.name} enabled={enabled} />
-        <button onClick={onEdit} className="min-w-0 flex-1 text-left">
-          <div className="flex items-center gap-1.5">
-            <p className={cn("text-[14.5px] font-semibold truncate", enabled ? "text-[color:var(--mn-fg)]" : "text-[color:var(--mn-muted)]")}>
-              {skill.name}
-            </p>
-            {skill.source === "system" && (
-              <ShieldCheck className="w-3.5 h-3.5 text-[color:var(--mn-muted)] shrink-0" />
+      <button onClick={onEdit} className="text-left">
+        <SkillAvatar name={skill.name} enabled={enabled} hue={hue} />
+        <div className="mt-2.5 flex items-center gap-1">
+          <p
+            className={cn(
+              "text-[14px] font-semibold truncate",
+              enabled ? "text-[color:var(--mn-fg)]" : "text-[color:var(--mn-muted)]",
             )}
-          </div>
-          <p className="mt-0.5 text-[12px] leading-snug text-[color:var(--mn-muted)] line-clamp-1">
-            {skill.description || (enabled ? "Active in chat" : "Paused")}
-          </p>
-        </button>
-        <div className="flex items-center gap-1 shrink-0">
-          <button
-            onClick={onDelete}
-            aria-label="Delete skill"
-            className="h-8 w-8 rounded-full grid place-items-center text-[color:var(--mn-muted)]/70 hover:text-[color:var(--mn-danger)] hover:bg-[color:var(--mn-sep)] transition-colors"
           >
-            <Trash2 className="w-3.5 h-3.5" />
-          </button>
-          <Switch checked={enabled} onCheckedChange={onToggle} />
+            {skill.name}
+          </p>
+          {skill.source === "system" && (
+            <ShieldCheck className="w-3.5 h-3.5 text-[color:var(--mn-muted)] shrink-0" />
+          )}
         </div>
+        <p className="mt-1 text-[11.5px] leading-[1.45] text-[color:var(--mn-muted)] line-clamp-2 min-h-[33px]">
+          {skill.description || (enabled ? "Active in chat" : "Paused")}
+        </p>
+      </button>
+
+      <div className="mt-2.5 pt-2.5 flex items-center justify-between border-t border-[color:var(--mn-sep)]/60">
+        <button
+          onClick={onDelete}
+          aria-label="Delete skill"
+          className="h-7 w-7 -ms-1 rounded-full grid place-items-center text-[color:var(--mn-muted)]/60 hover:text-[color:var(--mn-danger)] hover:bg-[color:var(--mn-sep)] transition-colors"
+        >
+          <Trash2 className="w-3.5 h-3.5" />
+        </button>
+        <Switch checked={enabled} onCheckedChange={onToggle} />
       </div>
     </motion.div>
   );
 }
+
 
 
 
