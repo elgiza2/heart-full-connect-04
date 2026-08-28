@@ -4,7 +4,7 @@
  * Horizontal scroll-snap pager with dots. Pure presentation.
  */
 import { useEffect, useRef, useState } from "react";
-import { Timer, ChevronRight, ChevronLeft } from "lucide-react";
+import { Timer, ChevronRight, ChevronLeft, Computer, FolderKanban, Hourglass } from "lucide-react";
 import { BrandIcon, hasBrandIcon } from "@/components/chat/media/BrandIcon";
 import { RatingBadge } from "@/components/foundations/rating-badge";
 import ServicesStage from "./ServicesStage";
@@ -28,6 +28,11 @@ const CSS = `
 @keyframes fsFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 @keyframes fsGlow { 0%, 100% { opacity: 0.35; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.05); } }
 @keyframes fsShimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+@keyframes fsProgress { 0% { width: 8%; } 55% { width: 68%; } 80% { width: 82%; } 100% { width: 8%; } }
+@keyframes fsPulse { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(110,231,160,0.5); } 50% { opacity: 0.75; box-shadow: 0 0 0 6px rgba(110,231,160,0); } }
+.fs-progress-bar { animation: fsProgress 7s ease-in-out infinite; }
+.fs-live-dot { animation: fsPulse 1.8s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .fs-progress-bar, .fs-live-dot { animation: none; } .fs-progress-bar { width: 68%; } }
 .fs-up { opacity: 0; animation: fsFadeUp .42s cubic-bezier(0.22,1,0.36,1) forwards; }
 /* Only one continuous ambient loop is allowed on screen at a time (the marquee).
    Float / glow / shimmer are kept as static styles so the eye has one focal motion. */
@@ -270,6 +275,92 @@ function ModelMarquee() {
   );
 }
 
+/** First panel: what Megsy actually does for you — computer, workspace, long tasks. */
+function MegsyServicesStage() {
+  const services: Array<{ icon: import("lucide-react").LucideIcon; title: string; meta: string }> = [
+    { icon: Computer, title: "Megsy Computer", meta: "A cloud desktop that clicks, types and builds for you" },
+    { icon: FolderKanban, title: "Your workspace", meta: "Files, docs, slides and code — all in one place" },
+    { icon: Hourglass, title: "Long-running tasks", meta: "Hours of work, done while you live your life" },
+  ];
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      {/* Live task card */}
+      <div
+        className="fs-up fs-glass"
+        style={{ animationDelay: "0.14s", borderRadius: 28, padding: "18px 20px" }}
+      >
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span
+              className="fs-live-dot"
+              style={{ width: 8, height: 8, borderRadius: 999, background: "#6ee7a0" }}
+            />
+            <span style={{ color: "#fff", fontSize: 14, fontWeight: 600 }}>Megsy is working</span>
+          </div>
+          <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 12 }}>12 min elapsed</span>
+        </div>
+        <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.5, margin: "12px 0 14px" }}>
+          Researching 40 sources, comparing competitors and writing your report…
+        </p>
+        <div
+          style={{
+            height: 6,
+            borderRadius: 999,
+            background: "rgba(255,255,255,0.12)",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            className="fs-progress-bar"
+            style={{
+              height: "100%",
+              borderRadius: 999,
+              background: "linear-gradient(90deg, rgba(255,255,255,0.55), #fff)",
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Service rows */}
+      {services.map((s, i) => (
+        <div
+          key={s.title}
+          className="fs-up fs-glass"
+          style={{
+            animationDelay: `${0.24 + i * 0.06}s`,
+            borderRadius: 28,
+            padding: "14px 18px",
+            display: "flex",
+            alignItems: "center",
+            gap: 14,
+          }}
+        >
+          <span
+            style={{
+              width: 42,
+              height: 42,
+              borderRadius: 16,
+              flexShrink: 0,
+              display: "grid",
+              placeItems: "center",
+              background: "rgba(255,255,255,0.1)",
+              border: "1px solid rgba(255,255,255,0.12)",
+            }}
+          >
+            <s.icon size={20} color="#fff" strokeWidth={1.8} />
+          </span>
+          <div style={{ minWidth: 0 }}>
+            <p style={{ color: "#fff", fontSize: 15, fontWeight: 600, margin: 0 }}>{s.title}</p>
+            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 12.5, marginTop: 2, lineHeight: 1.4 }}>
+              {s.meta}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 
 function StatRows({ items }: { items: Array<{ value: string; label: string }> }) {
   return (
@@ -438,8 +529,8 @@ function Page({ children }: { children: import("react").ReactNode }) {
 
 const PAGES = [
   <Page key="chat">
-    <Title heading="All the AI you need, one tap away." />
-    <ModelMarquee />
+    <Title heading="Megsy does the work, not just the talking." />
+    <MegsyServicesStage />
   </Page>,
   <Page key="services">
     <Title heading="One app, every AI workflow" />
