@@ -266,8 +266,11 @@ export async function handleMcpGateway(payload: GatewayPayload | null): Promise<
   try {
     supabase = db();
   } catch {
-    return fail(500, "Server misconfigured");
+    // Missing SUPABASE_SERVICE_ROLE_KEY on this deployment: the feature is
+    // unavailable, not crashed — report it as such with an actionable message.
+    return fail(503, "Tool servers are unavailable: the server is missing its Supabase service key.");
   }
+
 
   const user = await requireUser(supabase, payload.token);
   if (!user) return fail(401, "Not signed in");

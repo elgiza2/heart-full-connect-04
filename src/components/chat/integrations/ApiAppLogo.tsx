@@ -13,7 +13,9 @@ function domain(app: ApiApp): string | null {
   }
 }
 
-/** Ordered logo sources: Simple Icons → Unavatar → Google favicon → registry art. */
+/** Ordered logo sources. Simple Icons is only used for slugs we know exist
+ *  (or when the app has no domain), because every miss is a 404 + flicker;
+ *  otherwise the service's own favicon is tried first. */
 function sourcesFor(app: ApiApp): string[] {
   const host = domain(app);
   const simpleIconAliases: Record<string, string> = {
@@ -28,20 +30,28 @@ function sourcesFor(app: ApiApp): string[] {
     "google slides": "googleslides",
     facebook: "facebook",
   };
-  const simpleIconSlug =
-    simpleIconAliases[app.name.trim().toLowerCase()] ??
-    app.name
-      .toLowerCase()
-      .replace(/\([^)]*\)/g, "")
-      .replace(/[^a-z0-9]/g, "");
-  return [
-    simpleIconSlug ? `https://cdn.simpleicons.org/${simpleIconSlug}` : null,
-    host ? `https://unavatar.io/${host}?fallback=false` : null,
-    host ? `https://www.google.com/s2/favicons?domain=${host}&sz=128` : null,
-    host ? `https://icons.duckduckgo.com/ip3/${host}.ico` : null,
-    app.logo,
-  ].filter(Boolean) as string[];
+  const knownSlug = simpleIconAliases[app.name.trim().toLowerCase()] ?? null;
+  const guessedSlug = app.name
+    .toLowerCase()
+    .replace(/\([^)]*\)/g, "")
+    .replace(/[^a-z0-9]/g, "");
+  const simpleIcon = (slug: string | null) =>
+    slug ? `https://cdn.simpleicons.org/${slug}` : null;
+
+  const ordered = host
+    ? [
+        simpleIcon(knownSlug),
+        `https://www.google.com/s2/favicons?domain=${host}&sz=128`,
+        `https://unavatar.io/${host}?fallback=false`,
+        `https://icons.duckduckgo.com/ip3/${host}.ico`,
+        simpleIcon(knownSlug ? null : guessedSlug),
+        app.logo,
+      ]
+    : [simpleIcon(knownSlug ?? guessedSlug), app.logo];
+
+  return ordered.filter(Boolean) as string[];
 }
+
 
 
 export default function ApiAppLogo({ app, size = 38 }: { app: ApiApp; size?: number }) {
