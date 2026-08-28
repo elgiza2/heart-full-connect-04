@@ -144,6 +144,8 @@ export const AppRoutes = ({ currentUserId }: { currentUserId: string | null }) =
     <Route path="/settings/mcp" element={<ProtectedRoute><McpSettingsPage /></ProtectedRoute>} />
     <Route path="/mcp-callback" element={<ProtectedRoute><McpCallbackPage /></ProtectedRoute>} />
     <Route path="/settings/memory" element={<ProtectedRoute><KnowledgePage /></ProtectedRoute>} />
+    <Route path="/settings/knowledge" element={<Navigate to="/settings/memory" replace />} />
+
     <Route path="/settings/skills" element={<ProtectedRoute><SkillsSettingsPage /></ProtectedRoute>} />
     <Route path="/settings/skills/new" element={<ProtectedRoute><SkillsNewPage /></ProtectedRoute>} />
     <Route path="/settings/skills/library" element={<ProtectedRoute><SkillsLibraryPage /></ProtectedRoute>} />
