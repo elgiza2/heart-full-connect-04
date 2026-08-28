@@ -72,7 +72,7 @@ export const SkillsLibraryPage = lazy(() => import("@/pages/settings/SkillsLibra
 export const PricingPage = lazy(() => import("@/pages/marketing/PricingPage"));
 export const LegalPage = lazy(() => import("@/pages/legal/LegalPage"));
 export const NotFoundPage = lazy(() => import("@/pages/NotFoundPage"));
-export const OnboardingPage = lazy(() => import("@/pages/onboarding/OnboardingPage"));
+export const OnboardingPage = lazy(() => import("@/pages/onboarding/WelcomeShowcasePage"));
 
 /* ── Standalone utilities ─────────────────────────────────────── */
 export const SlidesPreviewPage = lazy(() => import("@/pages/SlidesPreviewPage"));
