@@ -42,6 +42,13 @@ function ipv6IsPublic(raw: string): boolean {
   // IPv4-mapped / IPv4-compatible: validate the embedded IPv4 instead.
   const mapped = ip.match(/^::ffff:(\d+\.\d+\.\d+\.\d+)$/) || ip.match(/^::(\d+\.\d+\.\d+\.\d+)$/);
   if (mapped) return ipv4IsPublic(mapped[1]);
+  // URL parsing normalises ::ffff:127.0.0.1 to its hex form ::ffff:7f00:1.
+  const hexMapped = ip.match(/^::ffff:([0-9a-f]{1,4}):([0-9a-f]{1,4})$/);
+  if (hexMapped) {
+    const hi = parseInt(hexMapped[1], 16);
+    const lo = parseInt(hexMapped[2], 16);
+    return ipv4IsPublic(`${hi >> 8}.${hi & 255}.${lo >> 8}.${lo & 255}`);
+  }
   if (/^f[cd]/.test(ip)) return false; // fc00::/7 unique-local
   if (/^fe[89ab]/.test(ip)) return false; // fe80::/10 link-local
   if (/^ff/.test(ip)) return false; // multicast

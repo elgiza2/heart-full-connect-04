@@ -49,14 +49,14 @@ export const DesktopGreeting = (_: DesktopGreetingProps) => {
             transition={{ duration: 0.5, delay: 0.14, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <p
+            <h1
               data-greeting
               dir="ltr"
               className="max-w-4xl text-center text-[30px] font-semibold leading-[1.12] text-foreground drop-shadow-[0_0_28px_rgba(96,165,250,0.28)] md:text-[42px] md:leading-[1.06] lg:text-[58px]"
               style={{ fontFamily: "'Instrument Serif', 'Fraunces', ui-serif, Georgia, serif" }}
             >
               {tagline}
-            </p>
+            </h1>
           </motion.div>
         </motion.div>
       </div>

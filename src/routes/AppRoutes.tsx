@@ -60,6 +60,8 @@ import {
   SkillsLibraryPage,
   // marketing
   PricingPage,
+  LegalPage,
+  NotFoundPage,
 } from "./lazyPages";
 
 const toChat = <RetiredRedirect to="/chat" />;
@@ -196,15 +198,15 @@ export const AppRoutes = ({ currentUserId }: { currentUserId: string | null }) =
     <Route path="/blog" element={toChat} />
     <Route path="/blog/*" element={toChat} />
     <Route path="/vs/:slug" element={toChat} />
-    <Route path="/about" element={toChat} />
-    <Route path="/contact" element={toChat} />
+    <Route path="/about" element={<LegalPage slug="about" />} />
+    <Route path="/contact" element={<LegalPage slug="contact" />} />
     <Route path="/support" element={toChat} />
     <Route path="/enterprise" element={toPricing} />
     <Route path="/trust" element={toChat} />
-    <Route path="/terms" element={toChat} />
-    <Route path="/privacy" element={toChat} />
+    <Route path="/terms" element={<LegalPage slug="terms" />} />
+    <Route path="/privacy" element={<LegalPage slug="privacy" />} />
     <Route path="/cookies" element={toChat} />
-    <Route path="/refund" element={toChat} />
+    <Route path="/refund" element={<LegalPage slug="refund" />} />
     <Route path="/policies/*" element={toChat} />
     <Route path="/legal/*" element={toChat} />
 
@@ -265,7 +267,7 @@ export const AppRoutes = ({ currentUserId }: { currentUserId: string | null }) =
     <Route path="/integration" element={<Navigate to="/chat?integrations=1" replace />} />
     <Route path="/settings/help" element={<Navigate to="/settings/support/help" replace />} />
 
-    {/* ── Anything else lands in the app ───────────────────── */}
-    <Route path="*" element={toChat} />
+    {/* ── Anything else is a real 404, not a soft-404 chat page ── */}
+    <Route path="*" element={<NotFoundPage />} />
   </>
 );
