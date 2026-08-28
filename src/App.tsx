@@ -52,9 +52,32 @@ const useAppChrome = () => {
     window.addEventListener("popstate", apply);
     window.addEventListener("megsy:theme", apply as EventListener);
     mq.addEventListener?.("change", apply);
-    // Route changes come from the SPA router (no popstate); a light poll keeps
-    // the auth screens dark without coupling this to the router internals.
-    const id = window.setInterval(apply, 400);
+
+    // SPA navigations emit no popstate, so observe them directly instead of
+    // polling: patch the two history methods the router uses and re-apply.
+    const history = window.history as History & { __megsyThemePatched?: boolean };
+    const patch = (method: "pushState" | "replaceState") => {
+      const original = history[method].bind(history);
+      return ((...args: Parameters<History["pushState"]>) => {
+        const result = original(...args);
+        window.dispatchEvent(new Event("megsy:navigation"));
+        return result;
+      }) as History["pushState"];
+    };
+    let restoreHistory: (() => void) | undefined;
+    if (!history.__megsyThemePatched) {
+      const originalPush = history.pushState;
+      const originalReplace = history.replaceState;
+      history.pushState = patch("pushState");
+      history.replaceState = patch("replaceState");
+      history.__megsyThemePatched = true;
+      restoreHistory = () => {
+        history.pushState = originalPush;
+        history.replaceState = originalReplace;
+        history.__megsyThemePatched = false;
+      };
+    }
+    window.addEventListener("megsy:navigation", apply);
 
     const savedAccent = localStorage.getItem("accent");
     if (savedAccent) html.style.setProperty("--primary", savedAccent);
