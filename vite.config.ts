@@ -285,7 +285,6 @@ function longRunDevPlugin(): Plugin {
       server.middlewares.use("/api/long-run", (req, res) => {
         res.setHeader("Content-Type", "application/json");
         res.setHeader("Cache-Control", "no-store");
-        res.setHeader("Access-Control-Allow-Origin", "*");
         res.setHeader("Access-Control-Allow-Headers", "authorization, content-type");
         if (req.method === "OPTIONS") {
           res.statusCode = 204;
@@ -331,7 +330,6 @@ function mcpDevPlugin(): Plugin {
       server.middlewares.use("/api/mcp", (req, res) => {
         res.setHeader("Content-Type", "application/json");
         res.setHeader("Cache-Control", "no-store");
-        res.setHeader("Access-Control-Allow-Origin", "*");
         res.setHeader("Access-Control-Allow-Headers", "authorization, content-type");
         if (req.method === "OPTIONS") {
           res.statusCode = 204;
@@ -383,7 +381,6 @@ function clerkDevPlugin(): Plugin {
       server.middlewares.use("/api/clerk", (req, res) => {
         res.setHeader("Content-Type", "application/json");
         res.setHeader("Cache-Control", "no-store");
-        res.setHeader("Access-Control-Allow-Origin", "*");
         res.setHeader("Access-Control-Allow-Headers", "authorization, content-type");
         if (req.method === "OPTIONS") {
           res.statusCode = 204;
