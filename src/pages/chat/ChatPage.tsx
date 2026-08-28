@@ -51,6 +51,25 @@ import { AuiProvider } from "./adapters/aui/AuiProvider";
 
 const RTL_UI_LANGS = new Set(["ar", "ar-eg", "he", "fa"]);
 const SIDEBAR_EDGE_SWIPE_ZONE = 36;
+/** A sideways swipe must not steal the gesture from a horizontal scroller
+ *  (mode chips, code blocks, tables) or from an element that drags itself. */
+function blocksSidebarSwipe(target: EventTarget | null, startX: number, rtl: boolean): boolean {
+  let node = target as HTMLElement | null;
+  // Anywhere on the surface may start the gesture, but the edge strip always wins.
+  const nearEdge = rtl ? startX >= window.innerWidth - SIDEBAR_EDGE_SWIPE_ZONE : startX <= SIDEBAR_EDGE_SWIPE_ZONE;
+  if (nearEdge) return false;
+  while (node && node !== document.body) {
+    if (node.dataset?.noSidebarSwipe === "true") return true;
+    if (node instanceof HTMLInputElement || node instanceof HTMLTextAreaElement) return true;
+    const style = window.getComputedStyle(node);
+    const overflowX = style.overflowX;
+    if ((overflowX === "auto" || overflowX === "scroll") && node.scrollWidth > node.clientWidth + 4)
+      return true;
+    if (style.touchAction.includes("none") || style.touchAction === "pan-x") return true;
+    node = node.parentElement;
+  }
+  return false;
+}
 const SIDEBAR_OPEN_SNAP = 0.22;
 const SIDEBAR_CLOSE_SNAP = 0.64;
 const SIDEBAR_FLING_VELOCITY = 520;
