@@ -1,5 +1,6 @@
 /** Browser client for the single native Deep Research stream. */
 import type { WebSource } from "@/lib/search/webSearchClient";
+import { authenticatedFetch } from "@/lib/authenticatedFetch";
 
 export const DEEP_RESEARCH_TOOL = {
   name: "deep_research",
