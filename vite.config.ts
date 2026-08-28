@@ -9,6 +9,27 @@ import { constants as zlibConstants } from "zlib";
 import { VitePWA } from "vite-plugin-pwa";
 import { devServerBridgePlugin } from "@lovable.dev/vite-plugin-dev-server-bridge";
 
+/**
+ * Dev/preview API middlewares run the SAME auth + rate-limit guard as the
+ * Vercel handlers in `api/`, so preview can never be more permissive than
+ * production. Returns false when the request was already answered.
+ */
+async function devApiGuard(
+  req: { headers: Record<string, string | string[] | undefined> },
+  res: { statusCode: number; setHeader: (k: string, v: string) => void; end: (b?: string) => void },
+  endpoint: string,
+): Promise<boolean> {
+  const { guardNodeRequest } = await import("./src/lib/api/apiGuard");
+  const result = await guardNodeRequest(req, endpoint);
+  if (result.ok) return true;
+  res.statusCode = result.status;
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Cache-Control", "no-store");
+  if (result.retryAfter) res.setHeader("Retry-After", String(result.retryAfter));
+  res.end(JSON.stringify({ error: result.error ?? "Unauthorized" }));
+  return false;
+}
+
 function createIntegrationAppToken() {
   const workspaceKey = process.env.INTEGRATION_APP_WORKSPACE_KEY ?? process.env.MEMBRANE_WORKSPACE_KEY;
   const workspaceSecret = process.env.INTEGRATION_APP_WORKSPACE_SECRET ?? process.env.MEMBRANE_WORKSPACE_SECRET;
