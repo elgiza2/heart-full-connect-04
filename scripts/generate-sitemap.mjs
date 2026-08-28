@@ -33,8 +33,6 @@ const STATIC_ROUTES = [
   ["/showcase", "0.6", "weekly"],
   ["/solutions", "0.7", "weekly"],
   ["/compare", "0.7", "weekly"],
-  ["/blog", "0.8", "daily"],
-  ["/docs", "0.8", "weekly"],
   ["/changelog", "0.5", "weekly"],
   ["/contact", "0.5", "monthly"],
   ["/security", "0.5", "monthly"],
@@ -65,7 +63,6 @@ function slugsFrom(file, arrayName) {
   }
 }
 
-const blogSlugs = slugsFrom("src/data/blogPosts.ts", "BLOG_POSTS");
 const comparisonSlugs = slugsFrom("src/data/comparisons.ts", "COMPARISONS");
 
 const entries = [];
@@ -77,7 +74,6 @@ const push = (path, priority, changefreq, alternates = false) => {
 };
 
 for (const [path, priority, changefreq] of STATIC_ROUTES) push(path, priority, changefreq, true);
-for (const slug of blogSlugs) push(`/blog/${slug}`, "0.7", "monthly", true);
 for (const slug of comparisonSlugs) push(`/compare/megsy-vs-${slug}`, "0.6", "monthly");
 
 // Localised marketing landings (/{lang}) — one entry per published locale.

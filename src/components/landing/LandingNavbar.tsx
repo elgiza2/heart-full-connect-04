@@ -143,7 +143,6 @@ const navItems: NavItem[] = [
       {
         title: "Resources",
         items: [
-          { label: "Docs", desc: "Complete product documentation", href: "/docs" },
           { label: "Pricing", desc: "Plans, credits & savings", href: "/pricing" },
           { label: "Enterprise", desc: "Megsy for large teams", href: "/enterprise" },
           { label: "Solutions", desc: "Discover every Megsy service", href: "/solutions" },

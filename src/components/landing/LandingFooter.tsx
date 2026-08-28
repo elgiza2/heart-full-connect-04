@@ -23,9 +23,7 @@ const columns: { title: string; links: LinkItem[] }[] = [
   {
     title: "Resources",
     links: [
-      { label: "Docs", href: "/docs" },
       { label: "Features Guide", href: "/features-guide" },
-      { label: "Blog", href: "/blog" },
       { label: "Megsy vs ChatGPT", href: "/vs/chatgpt" },
       { label: "Megsy vs Midjourney", href: "/vs/midjourney" },
       { label: "Megsy vs Lovable", href: "/vs/lovable" },
