@@ -275,6 +275,92 @@ function ModelMarquee() {
   );
 }
 
+/** First panel: what Megsy actually does for you — computer, workspace, long tasks. */
+function MegsyServicesStage() {
+  const services: Array<{ icon: import("lucide-react").LucideIcon; title: string; meta: string }> = [
+    { icon: Computer, title: "Megsy Computer", meta: "A cloud desktop that clicks, types and builds for you" },
+    { icon: FolderKanban, title: "Your workspace", meta: "Files, docs, slides and code — all in one place" },
+    { icon: Hourglass, title: "Long-running tasks", meta: "Hours of work, done while you live your life" },
+  ];
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      {/* Live task card */}
+      <div
+        className="fs-up fs-glass"
+        style={{ animationDelay: "0.14s", borderRadius: 28, padding: "18px 20px" }}
+      >
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span
+              className="fs-live-dot"
+              style={{ width: 8, height: 8, borderRadius: 999, background: "#6ee7a0" }}
+            />
+            <span style={{ color: "#fff", fontSize: 14, fontWeight: 600 }}>Megsy is working</span>
+          </div>
+          <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 12 }}>12 min elapsed</span>
+        </div>
+        <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 1.5, margin: "12px 0 14px" }}>
+          Researching 40 sources, comparing competitors and writing your report…
+        </p>
+        <div
+          style={{
+            height: 6,
+            borderRadius: 999,
+            background: "rgba(255,255,255,0.12)",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            className="fs-progress-bar"
+            style={{
+              height: "100%",
+              borderRadius: 999,
+              background: "linear-gradient(90deg, rgba(255,255,255,0.55), #fff)",
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Service rows */}
+      {services.map((s, i) => (
+        <div
+          key={s.title}
+          className="fs-up fs-glass"
+          style={{
+            animationDelay: `${0.24 + i * 0.06}s`,
+            borderRadius: 28,
+            padding: "14px 18px",
+            display: "flex",
+            alignItems: "center",
+            gap: 14,
+          }}
+        >
+          <span
+            style={{
+              width: 42,
+              height: 42,
+              borderRadius: 16,
+              flexShrink: 0,
+              display: "grid",
+              placeItems: "center",
+              background: "rgba(255,255,255,0.1)",
+              border: "1px solid rgba(255,255,255,0.12)",
+            }}
+          >
+            <s.icon size={20} color="#fff" strokeWidth={1.8} />
+          </span>
+          <div style={{ minWidth: 0 }}>
+            <p style={{ color: "#fff", fontSize: 15, fontWeight: 600, margin: 0 }}>{s.title}</p>
+            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 12.5, marginTop: 2, lineHeight: 1.4 }}>
+              {s.meta}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 
 function StatRows({ items }: { items: Array<{ value: string; label: string }> }) {
   return (
