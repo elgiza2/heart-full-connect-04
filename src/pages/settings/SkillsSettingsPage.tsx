@@ -33,6 +33,8 @@ import { useConfirm } from "@/components/common/ConfirmDialog";
 
 import { cn } from "@/lib/utils";
 import { SkillsAddMenu } from "./components/SkillsExtras";
+import { resolveSkillIcon, skillEmoji } from "@/lib/skillIcon";
+
 
 import { sanitizeErrorMessage } from "@/lib/sanitizeError";
 type DraftSkill = Partial<Skill> & {
