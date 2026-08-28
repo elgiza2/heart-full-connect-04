@@ -2,20 +2,23 @@ import { useMemo, useState } from "react";
 import { Check, ChevronRight, Loader2 } from "lucide-react";
 import type { Integration } from "@/lib/integrationsData";
 
-/** Ordered logo sources: Simple Icons → Unavatar → Google favicon. */
+/** Ordered logo sources. The service's own domain is tried first because it
+ *  always resolves; Simple Icons only has a subset of brands and every miss
+ *  costs a visible 404 + logo flicker. */
 function logoSources(item: Integration): string[] {
   const out: string[] = [];
   const slug = (item.pipedreamSlug || item.app || item.id)
     .toLowerCase()
     .replace(/[_\s]+/g, "")
     .replace(/[^a-z0-9-]/g, "");
-  if (slug) out.push(`https://cdn.simpleicons.org/${slug}`);
   if (item.domain) {
-    out.push(`https://unavatar.io/${item.domain}?fallback=false`);
     out.push(`https://www.google.com/s2/favicons?domain=${item.domain}&sz=128`);
+    out.push(`https://unavatar.io/${item.domain}?fallback=false`);
   }
+  if (slug) out.push(`https://cdn.simpleicons.org/${slug}`);
   return out;
 }
+
 
 export function IntegrationLogo({ item, size = 40 }: { item: Integration; size?: number }) {
   const sources = useMemo(() => logoSources(item), [item]);
