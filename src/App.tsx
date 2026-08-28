@@ -85,8 +85,9 @@ const useAppChrome = () => {
     return () => {
       window.removeEventListener("popstate", apply);
       window.removeEventListener("megsy:theme", apply as EventListener);
+      window.removeEventListener("megsy:navigation", apply);
       mq.removeEventListener?.("change", apply);
-      window.clearInterval(id);
+      restoreHistory?.();
     };
   }, []);
 };
