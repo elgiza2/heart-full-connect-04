@@ -160,7 +160,7 @@ const ngCss = `
   top: 0;
   z-index: 30;
   display: grid;
-  grid-template-columns: 38px 1fr 38px;
+  grid-template-columns: 38px 1fr auto;
   align-items: center;
   padding: 8px 0 10px;
   background: var(--mn-bg);
@@ -185,7 +185,7 @@ const ngCss = `
   transition: background-color 160ms ease;
 }
 .ng-back:active { background: var(--mn-sep); }
-.ng-topbar-trail { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+.ng-topbar-trail { min-width: 38px; display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
 
 /* --- Hero --- */
 .ng-hero {
