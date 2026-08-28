@@ -529,8 +529,8 @@ function Page({ children }: { children: import("react").ReactNode }) {
 
 const PAGES = [
   <Page key="chat">
-    <Title heading="All the AI you need, one tap away." />
-    <ModelMarquee />
+    <Title heading="Megsy does the work, not just the talking." />
+    <MegsyServicesStage />
   </Page>,
   <Page key="services">
     <Title heading="One app, every AI workflow" />
