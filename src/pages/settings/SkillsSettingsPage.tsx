@@ -351,76 +351,109 @@ export default function SkillsSettingsPage() {
         )}
       </div>
 
-      {/* Featured — compact */}
-      <button
-        onClick={() => navigate("/settings/skills/new")}
-        className="w-full flex items-center gap-3.5 rounded-[18px] bg-[var(--mn-card)] px-4 py-3.5 text-left active:scale-[0.99] transition-transform"
-      >
-        <span className="shrink-0 w-11 h-11 rounded-[14px] grid place-items-center bg-primary/10">
-          <Wand2 className="w-5 h-5 text-primary" strokeWidth={1.8} />
-        </span>
-        <span className="min-w-0 flex-1">
-          <span className="block text-[14.5px] font-semibold text-[color:var(--mn-fg)]">
-            Build a skill in a minute
+      {/* Bento: create + quick actions */}
+      <div className="grid grid-cols-2 gap-2.5">
+        <button
+          onClick={() => navigate("/settings/skills/new")}
+          className="col-span-2 relative overflow-hidden rounded-[22px] px-5 py-5 text-left active:scale-[0.99] transition-transform"
+          style={{
+            background:
+              "linear-gradient(135deg, hsl(var(--primary) / 0.14), hsl(var(--primary) / 0.04) 55%, transparent)",
+          }}
+        >
+          <span
+            className="pointer-events-none absolute -right-8 -top-10 h-32 w-32 rounded-full blur-2xl"
+            style={{ background: "hsl(var(--primary) / 0.18)" }}
+          />
+          <span className="relative flex items-start gap-3.5">
+            <span className="shrink-0 w-12 h-12 rounded-[16px] grid place-items-center bg-primary text-primary-foreground shadow-sm">
+              <Wand2 className="w-[22px] h-[22px]" strokeWidth={1.8} />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[16px] font-semibold text-[color:var(--mn-fg)]">
+                Create a skill with Megsy
+              </span>
+              <span className="mt-1 block text-[12.5px] leading-snug text-[color:var(--mn-muted)]">
+                Describe the expert you need — instructions, triggers and tools are written for you.
+              </span>
+            </span>
+            <ChevronRight className="mt-3.5 w-4 h-4 shrink-0 text-[color:var(--mn-muted)]" />
           </span>
-          <span className="mt-0.5 block text-[12px] leading-snug text-[color:var(--mn-muted)] line-clamp-1">
-            Describe the expert you need — Megsy writes the rest.
-          </span>
-        </span>
-        <ChevronRight className="w-4 h-4 shrink-0 text-[color:var(--mn-muted)]" />
-      </button>
+        </button>
 
-      {/* Filters */}
-      <div className="-mx-1 flex items-center gap-1.5 overflow-x-auto px-1 pb-0.5 no-scrollbar">
-        {(
-          [
-            { id: "all" as const, label: "All", count: mySkills.length },
-            { id: "enabled" as const, label: "Enabled", count: enabledCount },
-          ]
-        ).map((t) => (
-          <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
-            className={cn(
-              "shrink-0 h-8 px-3.5 rounded-full text-[12.5px] transition-colors",
-              tab === t.id
-                ? "bg-[color:var(--mn-fg)] text-[color:var(--mn-card)] font-semibold"
-                : "bg-[color:var(--mn-sep)]/60 text-[color:var(--mn-muted)] font-medium",
-            )}
-          >
-            {t.label}
-            {t.count > 0 && <span className="ms-1 tabular-nums opacity-60">{t.count}</span>}
-          </button>
-        ))}
         <button
           onClick={() => navigate("/settings/skills/library")}
-          className="shrink-0 h-8 px-3.5 rounded-full text-[12.5px] font-medium bg-[color:var(--mn-sep)]/60 text-[color:var(--mn-muted)]"
+          className="rounded-[18px] bg-[var(--mn-card)] px-4 py-3.5 text-left active:scale-[0.98] transition-transform"
         >
-          Library
-          {librarySkills.length > 0 && (
-            <span className="ms-1 tabular-nums opacity-60">{librarySkills.length}</span>
-          )}
+          <span className="w-9 h-9 rounded-[12px] grid place-items-center bg-[color:var(--mn-sep)]">
+            <Blocks className="w-[18px] h-[18px] text-[color:var(--mn-fg)]" strokeWidth={1.8} />
+          </span>
+          <span className="mt-2.5 block text-[13.5px] font-semibold text-[color:var(--mn-fg)]">Library</span>
+          <span className="block text-[11.5px] text-[color:var(--mn-muted)]">
+            {librarySkills.length > 0 ? `${librarySkills.length} ready-made` : "Official skills"}
+          </span>
+        </button>
+
+        <button
+          onClick={() => fileInputRef.current?.click()}
+          className="rounded-[18px] bg-[var(--mn-card)] px-4 py-3.5 text-left active:scale-[0.98] transition-transform"
+        >
+          <span className="w-9 h-9 rounded-[12px] grid place-items-center bg-[color:var(--mn-sep)]">
+            {importing ? (
+              <Loader2 className="w-[18px] h-[18px] animate-spin text-[color:var(--mn-fg)]" />
+            ) : (
+              <Paperclip className="w-[18px] h-[18px] text-[color:var(--mn-fg)]" strokeWidth={1.8} />
+            )}
+          </span>
+          <span className="mt-2.5 block text-[13.5px] font-semibold text-[color:var(--mn-fg)]">Import</span>
+          <span className="block text-[11.5px] text-[color:var(--mn-muted)]">From a .zip file</span>
         </button>
       </div>
 
-      {/* My skills */}
+      {/* Filters */}
+      <div className="flex items-center justify-between gap-2">
+        <div className="-mx-1 flex items-center gap-1.5 overflow-x-auto px-1 pb-0.5 no-scrollbar">
+          {(
+            [
+              { id: "all" as const, label: "All", count: mySkills.length },
+              { id: "enabled" as const, label: "Active", count: enabledCount },
+            ]
+          ).map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              className={cn(
+                "shrink-0 h-8 px-3.5 rounded-full text-[12.5px] transition-colors",
+                tab === t.id
+                  ? "bg-[color:var(--mn-fg)] text-[color:var(--mn-card)] font-semibold"
+                  : "bg-[color:var(--mn-sep)]/60 text-[color:var(--mn-muted)] font-medium",
+              )}
+            >
+              {t.label}
+              {t.count > 0 && <span className="ms-1 tabular-nums opacity-60">{t.count}</span>}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* My skills — grid */}
       {loading ? (
-        <div className="rounded-[18px] bg-[var(--mn-card)] overflow-hidden">
-          {[0, 1, 2].map((i) => (
-            <div key={i} className="h-[68px] border-b border-[color:var(--mn-sep)]/60 last:border-0 animate-pulse" />
+        <div className="grid grid-cols-2 gap-2.5">
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="h-[132px] rounded-[18px] bg-[var(--mn-card)] animate-pulse" />
           ))}
         </div>
       ) : visible.length === 0 ? (
-        <div className="text-center py-14 px-6 rounded-[18px] bg-[var(--mn-card)]">
+        <div className="text-center py-14 px-6 rounded-[22px] bg-[var(--mn-card)]">
           <div className="mx-auto w-11 h-11 rounded-full bg-[color:var(--mn-sep)] grid place-items-center mb-3">
             <Blocks className="w-5 h-5 text-[color:var(--mn-muted)]" />
           </div>
           <p className="text-[15px] font-semibold text-[color:var(--mn-fg)]">
-            {tab === "enabled" ? "No enabled skills" : "No skills yet"}
+            {tab === "enabled" ? "No active skills" : query ? "No matches" : "No skills yet"}
           </p>
           <p className="text-[12.5px] mt-1.5 text-[color:var(--mn-muted)] max-w-[280px] mx-auto leading-relaxed">
             {tab === "enabled"
-              ? "Enable a skill below, or create a new one."
+              ? "Turn one on below, or create a new one."
               : "Create your first expert, or add one from the official library."}
           </p>
           <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
@@ -439,7 +472,7 @@ export default function SkillsSettingsPage() {
           </div>
         </div>
       ) : (
-        <div className="rounded-[18px] bg-[var(--mn-card)] overflow-hidden">
+        <div className="grid grid-cols-2 gap-2.5">
           <AnimatePresence initial={false}>
             {visible.map((s, i) => (
               <SkillRowCard
@@ -477,6 +510,7 @@ export default function SkillsSettingsPage() {
     </SubShell>
   );
 }
+
 
 
 function SkillAvatar({ name, enabled }: { name: string; enabled: boolean }) {
