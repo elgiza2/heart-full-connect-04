@@ -1,16 +1,13 @@
 /** @doc Serverless endpoint for Clerk-backed sign-in bridging and app integrations. */
 import { handleClerk, type ClerkPayload } from "../src/lib/clerk/bridgeCore";
+import { apiHeaders } from "../src/lib/api/authenticateRequest";
 
 export const config = { runtime: "nodejs" };
 
 export default async function handler(req: Request): Promise<Response> {
-  const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "authorization, content-type",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Content-Type": "application/json",
-    "Cache-Control": "no-store",
-  };
+  // Same strict origin allowlist as the rest of the API — never `*`, because
+  // this bridge mints sign-in state.
+  const headers = apiHeaders(req);
   if (req.method === "OPTIONS") return new Response("ok", { headers });
   if (req.method !== "POST") {
     return new Response(JSON.stringify({ ok: false, error: "Method not allowed" }), { status: 405, headers });

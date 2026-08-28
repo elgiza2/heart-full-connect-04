@@ -1,5 +1,6 @@
 /** Browser client for the single native Deep Research stream. */
 import type { WebSource } from "@/lib/search/webSearchClient";
+import { authenticatedFetch } from "@/lib/authenticatedFetch";
 
 export const DEEP_RESEARCH_TOOL = {
   name: "deep_research",
@@ -42,7 +43,7 @@ function gatewayError(data: unknown, fallback: string): string {
 
 export async function runDeepResearchTool(run: DeepResearchToolRun): Promise<string> {
   run.onStatus?.("Planning the investigation…");
-  const response = await fetch("/api/deep-research", {
+  const response = await authenticatedFetch("/api/deep-research", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query: run.query, context: run.context, depth: run.depth }),
