@@ -13439,6 +13439,30 @@ export type Database = {
         }
         Relationships: []
       }
+      video_quota_usage: {
+        Row: {
+          created_at: string
+          id: string
+          model: string | null
+          period: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          model?: string | null
+          period: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          model?: string | null
+          period?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       voice_templates: {
         Row: {
           audio_file_url: string
@@ -14768,6 +14792,10 @@ export type Database = {
         Args: { _action: string; _intent_id: string; _telegram_id: number }
         Returns: number
       }
+      consume_video_quota: {
+        Args: { _model?: string; _unlimited?: boolean }
+        Returns: Json
+      }
       create_notification: {
         Args: {
           p_message: string
@@ -14953,6 +14981,7 @@ export type Database = {
         Args: { p_email?: string; p_user_id?: string }
         Returns: Json
       }
+      get_video_quota: { Args: never; Returns: Json }
       get_workspace_invite_details: { Args: { p_token: string }; Returns: Json }
       gram_ad_watch_claim:
         | { Args: { _telegram_id: number }; Returns: Json }
@@ -15880,6 +15909,7 @@ export type Database = {
         }
         Returns: Json
       }
+      video_quota_tier: { Args: { _uid: string }; Returns: string }
       watchdog_resume_background: { Args: never; Returns: number }
       watchdog_resume_operator: { Args: never; Returns: undefined }
       workspace_accept_invite: { Args: { p_token: string }; Returns: Json }
