@@ -442,6 +442,7 @@ function webSearchDevPlugin(): Plugin {
         const chunks: Buffer[] = [];
         req.on("data", (c) => chunks.push(Buffer.from(c)));
         req.on("end", async () => {
+          if (!(await devApiGuard(req as never, res as never, "web-search"))) return;
           let payload: { query?: string; count?: number; offset?: number } | null = null;
           try {
             payload = chunks.length ? JSON.parse(Buffer.concat(chunks).toString("utf8")) : null;
@@ -493,6 +494,7 @@ function readUrlDevPlugin(): Plugin {
         const chunks: Buffer[] = [];
         req.on("data", (c) => chunks.push(Buffer.from(c)));
         req.on("end", async () => {
+          if (!(await devApiGuard(req as never, res as never, "read-url"))) return;
           let payload: { urls?: string[]; maxChars?: number } | null = null;
           try {
             payload = chunks.length ? JSON.parse(Buffer.concat(chunks).toString("utf8")) : null;
@@ -541,6 +543,7 @@ function deepResearchDevPlugin(): Plugin {
         const chunks: Buffer[] = [];
         req.on("data", (c) => chunks.push(Buffer.from(c)));
         req.on("end", async () => {
+          if (!(await devApiGuard(req as never, res as never, "deep-research"))) return;
           let payload: Record<string, any> | null = null;
           try {
             payload = chunks.length ? JSON.parse(Buffer.concat(chunks).toString("utf8")) : null;
