@@ -102,10 +102,10 @@ function ChipRow({ chips, duration, reverse }: { chips: ModelChip[]; duration: n
 function Heading({ children, sub }: { children: React.ReactNode; sub?: string }) {
   return (
     <header className="mb-7 text-center">
-      <h1 className="text-[30px] font-semibold leading-[1.1] tracking-[-0.035em] text-white sm:text-4xl">
+      <h1 className="ob-title text-[30px] font-semibold leading-[1.1] tracking-[-0.035em] sm:text-4xl">
         {children}
       </h1>
-      {sub && <p className="mx-auto mt-3 max-w-[19rem] text-[14.5px] leading-relaxed text-white/60">{sub}</p>}
+      {sub && <p className="ob-sub mx-auto mt-3 max-w-[19rem] text-[14.5px] leading-relaxed">{sub}</p>}
     </header>
   );
 }
@@ -134,9 +134,9 @@ function WorkflowsPanel() {
       <ul className="grid list-none grid-cols-2 gap-2.5 p-0">
         {WORKFLOWS.map(({ icon: Icon, title, desc }) => (
           <li key={title} className="ob-glass rounded-2xl p-3.5">
-            <Icon size={18} className="text-white/85" />
-            <p className="mt-2.5 text-[14.5px] font-semibold text-white">{title}</p>
-            <p className="mt-1 text-[12.5px] leading-snug text-white/55">{desc}</p>
+            <Icon size={18} className="ob-ink" />
+            <p className="ob-ink mt-2.5 text-[14.5px] font-semibold">{title}</p>
+            <p className="ob-sub mt-1 text-[12.5px] leading-snug">{desc}</p>
           </li>
         ))}
       </ul>
@@ -158,23 +158,23 @@ function PricingPanel() {
       <Heading>Try everything for ${intro}</Heading>
       <div className="ob-glass rounded-3xl p-5">
         <div className="flex items-baseline gap-2">
-          <span className="text-[54px] font-semibold leading-none tracking-[-0.04em] text-white">
+          <span className="ob-ink text-[54px] font-semibold leading-none tracking-[-0.04em]">
             ${intro}
           </span>
-          <span className="text-sm font-medium text-white/60">first month</span>
+          <span className="ob-sub text-sm font-medium">first month</span>
         </div>
-        <p className="mt-3 text-[13.5px] leading-relaxed text-white/65">
+        <p className="ob-sub mt-3 text-[13.5px] leading-relaxed">
           Then ${regular}/month. Yearly plans include 4 months free.
         </p>
         <ul className="mt-5 flex list-none flex-col gap-3 p-0">
           {rows.map((r) => (
             <li key={r.title} className="flex items-start gap-3">
               <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-white/15">
-                <Check size={12} className="text-white" />
+                <Check size={12} className="ob-ink" />
               </span>
               <span className="min-w-0">
-                <span className="block text-[14.5px] font-medium text-white">{r.title}</span>
-                <span className="block text-[12.5px] text-white/55">{r.meta}</span>
+                <span className="ob-ink block text-[14.5px] font-medium">{r.title}</span>
+                <span className="ob-sub block text-[12.5px]">{r.meta}</span>
               </span>
             </li>
           ))}
@@ -197,10 +197,10 @@ function CommunityPanel() {
           { k: "24/7", v: "background agents that keep working" },
         ].map((s) => (
           <div key={s.k} className="flex items-center gap-3 text-start">
-            <span className="w-14 shrink-0 text-2xl font-semibold tracking-[-0.03em] text-white">
+            <span className="ob-ink w-14 shrink-0 text-2xl font-semibold tracking-[-0.03em]">
               {s.k}
             </span>
-            <span className="text-[13px] leading-snug text-white/60">{s.v}</span>
+            <span className="ob-sub text-[13px] leading-snug">{s.v}</span>
           </div>
         ))}
       </div>
@@ -303,7 +303,7 @@ const OnboardingPage = () => {
         <button
           type="button"
           onClick={() => void finish()}
-          className="absolute end-4 top-[max(1rem,env(safe-area-inset-top))] z-10 rounded-full px-3 py-1.5 text-[13px] font-medium text-white/65 transition-colors hover:text-white"
+          className="absolute end-4 top-[max(1rem,env(safe-area-inset-top))] ob-skip z-10 rounded-full px-3 py-1.5 text-[13px] font-medium transition-colors"
         >
           Skip
         </button>
@@ -313,7 +313,7 @@ const OnboardingPage = () => {
             type="button"
             aria-label="Previous"
             onClick={() => goTo(index - 1)}
-            className="ob-glass absolute start-4 top-[max(1rem,env(safe-area-inset-top))] z-10 grid h-9 w-9 place-items-center rounded-full text-white"
+            className="ob-glass absolute start-4 top-[max(1rem,env(safe-area-inset-top))] ob-ink z-10 grid h-9 w-9 place-items-center rounded-full"
           >
             <ArrowLeft size={16} />
           </button>
@@ -360,7 +360,7 @@ const OnboardingPage = () => {
             <button
               type="button"
               onClick={next}
-              className="ob-cta ob-glass flex w-full items-center justify-center gap-2 rounded-full py-4 text-[15px] font-semibold text-white"
+              className="ob-cta ob-glass ob-ink flex w-full items-center justify-center gap-2 rounded-full py-4 text-[15px] font-semibold"
             >
               {CTA_LABELS[index]}
               <ArrowRight size={16} className="rtl:rotate-180" />
