@@ -10,7 +10,6 @@ import {
   Shield,
   KeyRound,
   Plug,
-  BookOpen,
   Star,
   Compass,
   FileText,
@@ -118,7 +117,6 @@ export default function CommandPalette() {
     { id: "apps", label: "Apps", icon: LayoutGrid, run: go("/apps") },
     { id: "models", label: "AI Models", icon: Sparkles, run: go("/models") },
     { id: "showcase", label: "Showcase", icon: Star, run: go("/showcase") },
-    { id: "docs", label: "Docs", icon: BookOpen, run: go("/docs") },
     { id: "pricing", label: "Pricing", icon: CreditCard, run: go("/pricing") },
     { id: "about", label: "About", icon: Compass, run: go("/about") },
   ];

@@ -19,7 +19,6 @@
 - [Pricing](https://megsyai.com/pricing): plans and limits
 - [About](https://megsyai.com/about): company and mission
 - [Features guide](https://megsyai.com/features): capability walkthrough
-- [Blog](https://megsyai.com/blog): announcements and guides
 - [Contact](https://megsyai.com/contact): reach the team
 
 ## Policies
